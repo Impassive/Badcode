@@ -1,0 +1,10 @@
+C:\Users\Admin\source\repos\TestGraphics1\TestGraphics1\bin\Debug\TestGraphics1.exe.config
+C:\Users\Admin\source\repos\TestGraphics1\TestGraphics1\bin\Debug\TestGraphics1.exe
+C:\Users\Admin\source\repos\TestGraphics1\TestGraphics1\bin\Debug\TestGraphics1.pdb
+C:\Users\Admin\source\repos\TestGraphics1\TestGraphics1\obj\Debug\TestGraphics.MainForm.resources
+C:\Users\Admin\source\repos\TestGraphics1\TestGraphics1\obj\Debug\TestGraphics1.Properties.Resources.resources
+C:\Users\Admin\source\repos\TestGraphics1\TestGraphics1\obj\Debug\TestGraphics.csproj.GenerateResource.Cache
+C:\Users\Admin\source\repos\TestGraphics1\TestGraphics1\obj\Debug\TestGraphics.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\repos\TestGraphics1\TestGraphics1\obj\Debug\TestGraphics1.exe
+C:\Users\Admin\source\repos\TestGraphics1\TestGraphics1\obj\Debug\TestGraphics1.pdb
+C:\Users\Admin\source\repos\TestGraphics1\TestGraphics1\obj\Debug\TestGraphics.csprojResolveAssemblyReference.cache
