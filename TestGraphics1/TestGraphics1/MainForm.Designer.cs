@@ -40,11 +40,12 @@
             this.calculateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.graphic_box = new System.Windows.Forms.GroupBox();
+            this.analitics_label_right = new System.Windows.Forms.Label();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.analytics_box = new System.Windows.Forms.GroupBox();
             this.analitics_label_middle = new System.Windows.Forms.Label();
             this.analytics_label_left = new System.Windows.Forms.Label();
-            this.analitics_label_right = new System.Windows.Forms.Label();
+            this.gistToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.graphic_box.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
@@ -127,6 +128,7 @@
             // 
             this.analyticsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.calculateToolStripMenuItem,
+            this.gistToolStripMenuItem1,
             this.hidToolStripMenuItem});
             this.analyticsToolStripMenuItem.Name = "analyticsToolStripMenuItem";
             this.analyticsToolStripMenuItem.Size = new System.Drawing.Size(80, 24);
@@ -149,7 +151,6 @@
             // graphic_box
             // 
             this.graphic_box.AutoSize = true;
-            this.graphic_box.Controls.Add(this.analitics_label_right);
             this.graphic_box.Controls.Add(this.chart);
             this.graphic_box.Dock = System.Windows.Forms.DockStyle.Fill;
             this.graphic_box.Location = new System.Drawing.Point(0, 28);
@@ -158,6 +159,16 @@
             this.graphic_box.TabIndex = 2;
             this.graphic_box.TabStop = false;
             this.graphic_box.Text = "Graphic";
+            // 
+            // analitics_label_right
+            // 
+            this.analitics_label_right.AutoSize = true;
+            this.analitics_label_right.Dock = System.Windows.Forms.DockStyle.Left;
+            this.analitics_label_right.Location = new System.Drawing.Point(180, 18);
+            this.analitics_label_right.Name = "analitics_label_right";
+            this.analitics_label_right.Size = new System.Drawing.Size(46, 17);
+            this.analitics_label_right.TabIndex = 1;
+            this.analitics_label_right.Text = "label1";
             // 
             // chart
             // 
@@ -199,15 +210,12 @@
             this.analytics_label_left.TabIndex = 0;
             this.analytics_label_left.Text = "Nothing to compute";
             // 
-            // analitics_label_right
+            // gistToolStripMenuItem1
             // 
-            this.analitics_label_right.AutoSize = true;
-            this.analitics_label_right.Location = new System.Drawing.Point(785, 22);
-            this.analitics_label_right.Dock = System.Windows.Forms.DockStyle.Left;
-            this.analitics_label_right.Name = "analitics_label_right";
-            this.analitics_label_right.Size = new System.Drawing.Size(46, 17);
-            this.analitics_label_right.TabIndex = 1;
-            this.analitics_label_right.Text = "label1";
+            this.gistToolStripMenuItem1.Name = "gistToolStripMenuItem1";
+            this.gistToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
+            this.gistToolStripMenuItem1.Text = "Gist";
+            this.gistToolStripMenuItem1.Click += new System.EventHandler(this.gistToolStripMenuItem1_Click);
             // 
             // MainForm
             // 
@@ -223,7 +231,6 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.graphic_box.ResumeLayout(false);
-            this.graphic_box.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.analytics_box.ResumeLayout(false);
             this.analytics_box.PerformLayout();
@@ -250,6 +257,7 @@
         private System.Windows.Forms.ToolStripMenuItem yaxbToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ybeaxToolStripMenuItem;
         private System.Windows.Forms.Label analitics_label_right;
+        private System.Windows.Forms.ToolStripMenuItem gistToolStripMenuItem1;
     }
 }
 

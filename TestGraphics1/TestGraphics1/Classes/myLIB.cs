@@ -12,74 +12,54 @@ namespace TestGraphics
         private double next = 0;
         public Custom_random(int seed = 55)
         {
-            next = seed * Math.PI;
+            next = seed % Math.PI;
         }
 
         public double Next(int interval)
         {
-            next += next % (interval * Math.E)+(int)(DateTime.Now.Millisecond);
+            next += next % (interval * Math.E) + (int)(DateTime.Now.Millisecond);
             return next % (interval - (-interval) + 1) + (-interval);
         }
     }
 
-    public class Analysis
+    public static class Analysis
     {
-        public Analysis(DataPointCollection data)
-        {
-            //среднее
-            double calculated_avg = 0;
-            calculated_avg = Calculate_avg(data);
-            //среднеквадратичное
-            double calculated_rms = 0;
-            calculated_rms = Calculate_rms(data);
-            //дисперсия
-            double calculated_dispersion = 0;
-            calculated_dispersion = Calculate_dispersion(data,2);
-            //среднеквадратичное отклонение
-            double calculated_standard_deviation = Math.Sqrt(Calculate_dispersion(data,2));
-        }
         //Среднее
         public static double Calculate_avg(DataPointCollection data)
         {
-            double sumX = 0;
-            int counter = 0;
+            double sum = 0;
             foreach (var point in data)
             {
-                sumX += point.YValues[0];
-                counter++;
+                sum += point.YValues[0];
             }
-            return (double)(sumX / counter);
+            return (double)(sum / data.Count);
         }
         //Среднеквадратичное
         public static double Calculate_rms(DataPointCollection data)
         {
-            double sumX = 0;
-            int counter = 0;
+            double sum = 0;
             foreach (var point in data)
             {
-                sumX += Math.Pow(point.YValues[0], 2);
-                counter++;
+                sum += Math.Pow(point.YValues[0], 2);
             }
-            return (double)(sumX / counter);
+            return (double)(sum / data.Count);
         }
         //Дисперсия
         public static double Calculate_dispersion(DataPointCollection data, int pow)
         {
-            int counter = 0;
             double avg = 0;
             double dispersion = 0;
             avg = Calculate_avg(data);
             foreach (var point in data)
             {
                 dispersion += Math.Pow(point.YValues[0] - avg, pow);
-                counter++;
             }
-            return dispersion / counter;
+            return dispersion / data.Count;
         }
         //Стандартное отклонение
         public static double Calculate_standard_deviation(DataPointCollection data)
         {
-            return Math.Sqrt(Calculate_dispersion(data,2));
+            return Math.Sqrt(Calculate_dispersion(data, 2));
         }
         //Среднее отклонение (сигма?)
         public static double Calculate_avg_deviation(DataPointCollection data)
@@ -89,13 +69,28 @@ namespace TestGraphics
         //Асимметрия
         public static double Calculate_asymmetry(DataPointCollection data)
         {
-            return (Calculate_dispersion(data, 3))/ Math.Pow(Calculate_standard_deviation(data),3);
+            return (Calculate_dispersion(data, 3)) / Math.Pow(Calculate_standard_deviation(data), 3);
         }
         //Эксцесс
         public static double Calculate_kurtosis(DataPointCollection data)
         {
             return (Calculate_dispersion(data, 4)) / Math.Pow(Calculate_standard_deviation(data), 4);
         }
-    }
+        public static int[] prepare_gist_data(DataPointCollection data, int delimiter)
+        {
+            double[] arr = new double[MainForm.N];
+            arr = data.Select(y => y.YValues[0]).ToArray();
+            double minY = arr.Min();
+            double maxY = arr.Max();
+            double block = (maxY - minY) / delimiter;
+            int[] gist = new int[delimiter + 1];
 
+            foreach (var p in arr)
+            {
+                gist[(int)(Math.Truncate((p - minY) / block))]++;
+            }
+            return gist;
+        }
+    }
 }
+

@@ -51,7 +51,7 @@ namespace TestGraphics
             {
                 series.Points.Clear();
             }
-            
+            series.ChartType = SeriesChartType.Spline;
         }
 
         public void update_analysis()
@@ -125,23 +125,26 @@ namespace TestGraphics
             analytics_label_left.Text = "";
             analytics_label_left.Text += "СЗ: " + Math.Round(Analysis.Calculate_avg(series.Points), 2) + "\n\t";
             analytics_label_left.Text += "СК: " + Math.Round(Analysis.Calculate_rms(series.Points), 2) + "\n\t";
-            analytics_label_left.Text += "Дисперсия: " + Math.Round(Analysis.Calculate_dispersion(series.Points,2), 2) + "\n\t";
+            analytics_label_left.Text += "Дисперсия: " + Math.Round(Analysis.Calculate_dispersion(series.Points, 2), 2) + "\n\t";
             analytics_label_left.Text += "СКО: " + Math.Round(Analysis.Calculate_standard_deviation(series.Points), 2) + "\n\t";
         }
 
         private void middle_label_fill()
         {
             analitics_label_middle.Text = "";
-            analitics_label_middle.Text += "СО (σ): " + Math.Round(Analysis.Calculate_avg_deviation(series.Points), 2) + "\n\t";
-            analitics_label_middle.Text += "3-ий момент: " + Math.Round(Analysis.Calculate_dispersion(series.Points, 3), 2) + "\n\t";
-            analitics_label_middle.Text += "4-ый момент: " + Math.Round(Analysis.Calculate_dispersion(series.Points, 4), 2) + "\n\t";
+            analitics_label_middle.Text += "|  СО (σ): " + Math.Round(Analysis.Calculate_avg_deviation(series.Points), 2) + "\n\t";
+            analitics_label_middle.Text += "|  3-ий момент: " + Math.Round(Analysis.Calculate_dispersion(series.Points, 3), 2) + "\n\t";
+            analitics_label_middle.Text += "|  4-ый момент: " + Math.Round(Analysis.Calculate_dispersion(series.Points, 4), 2) + "\n\t";
+            analitics_label_middle.Text += "|  \n\t";
         }
 
         private void right_label_fill()
         {
             analitics_label_right.Text = "";
-            analitics_label_right.Text += "Асимметрия: " + Math.Round(Analysis.Calculate_asymmetry(series.Points), 2) + "\n\t";
-            analitics_label_right.Text += "Эксцесс: " + Math.Round(Analysis.Calculate_kurtosis(series.Points), 2) + "\n\t";
+            analitics_label_right.Text += "|  Асимметрия: " + Math.Round(Analysis.Calculate_asymmetry(series.Points), 2) + "\n\t";
+            analitics_label_right.Text += "|  Эксцесс: " + Math.Round(Analysis.Calculate_kurtosis(series.Points), 2) + "\n\t";
+            analitics_label_right.Text += "|  \n\t";
+            analitics_label_right.Text += "|  \n\t";
         }
         private void hidToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -155,7 +158,7 @@ namespace TestGraphics
             {
                 chart_clear();
             }
-            Chart_plots.chart_graph_1(1, 1);
+            Chart_plots.chart_graph_1(1, 0);
             chart.Update();
             update_analysis();
         }
@@ -169,6 +172,25 @@ namespace TestGraphics
             Chart_plots.chart_graph_2(1, 1);
             chart.Update();
             update_analysis();
+        }
+
+        private void gistToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int[] gist = Analysis.prepare_gist_data(series.Points, 10);
+                if (chart.Series.Count > 0)
+                { chart_clear(); }
+                Chart_plots.prepare_gist(gist);
+            }
+            catch
+            {
+                title.Text = "No Data";
+            }
+            series.ChartType = SeriesChartType.Column;
+            chart.Update();
+            Controls.Remove(analytics_box);
+            analytics_box.Visible = false;
         }
     }
 }

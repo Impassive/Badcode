@@ -70,5 +70,12 @@ namespace TestGraphics
                 }
             }
         }
+        public static void prepare_gist(int[] gist)
+        {
+            for (int i=0; i< gist.Length; i++)
+            {
+                MainForm.series.Points.AddXY(i,gist[i]);
+            }
+        }
     }
 }
