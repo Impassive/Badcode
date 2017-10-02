@@ -20,6 +20,8 @@ namespace TestGraphics
         public static Title title;
         public static Font font;
         public static Series temp_series;
+        public static int left = 0;
+        public static int right = 5000;
 
         public MainForm()
         {

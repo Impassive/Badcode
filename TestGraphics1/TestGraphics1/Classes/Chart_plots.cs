@@ -57,7 +57,7 @@ namespace TestGraphics
                 Random ry = new Random(seed);
                 for (double x = 0; x < MainForm.N / 2; x += 1)
                 {
-                    MainForm.series.Points.AddXY(x, Math.Cos(ry.Next()));
+                    MainForm.series.Points.AddXY(x, ry.NextDouble());
                 }
             }
             else
@@ -84,12 +84,12 @@ namespace TestGraphics
         {
             MainForm.title.Text = "Correlation";
             Random ry = new Random(seed);
-            for (double x = 0; x < MainForm.N / 2; x += 1)
+            for (double x = 0; x < MainForm.N / 10; x += 1)
             {
-                MainForm.series.Points.AddXY(x, Math.Cos(ry.Next()));
+                MainForm.series.Points.AddXY(x, ry.NextDouble());
             }
             Custom_random r = new Custom_random(seed);
-            for (double x = 0; x < MainForm.N / 2; x += 1)
+            for (double x = 0; x < MainForm.N / 10; x += 1)
             {
                 MainForm.temp_series.Points.AddXY(x, r.Next(seed));
             }

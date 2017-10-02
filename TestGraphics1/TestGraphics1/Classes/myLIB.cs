@@ -18,7 +18,7 @@ namespace TestGraphics
         public double Next(int interval)
         {
             next += next % (interval * Math.E) + (int)(DateTime.Now.Millisecond);
-            return next % (interval - (-interval) + 1) + (-interval);
+            return 0 + ((next % 100) / 100) * (interval - 0);
         }
     }
 
