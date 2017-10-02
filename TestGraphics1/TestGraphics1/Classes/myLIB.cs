@@ -7,6 +7,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace TestGraphics
 {
+    //ДОПИЛИТЬ!
     public class Custom_random
     {
         private double next = 0;
@@ -15,10 +16,10 @@ namespace TestGraphics
             next = seed % Math.PI;
         }
 
-        public double Next(int interval)
+        public double Next()
         {
-            next += next % (interval * Math.E) + (int)(DateTime.Now.Millisecond);
-            return 0 + ((next % 100) / 100) * (interval - 0);
+            next += next % (Math.E) + (int)(DateTime.Now.Millisecond);
+            return ((next % 100) / 100);
         }
     }
 
@@ -78,7 +79,7 @@ namespace TestGraphics
         }
         public static int[] prepare_gist_data(DataPointCollection data, int delimiter)
         {
-            double[] arr = new double[MainForm.N];
+            double[] arr = new double[MainForm.right_X];
             arr = data.Select(y => y.YValues[0]).ToArray();
             double minY = arr.Min();
             double maxY = arr.Max();
@@ -109,6 +110,24 @@ namespace TestGraphics
                 sum += (data1[i].YValues[0] - avg_1) * (data2[i + lag].YValues[0] - avg_2);
             }
             return sum / data1.Count;
+        }
+
+        //увеличить N, разбить на 10 кусков, взять среднее или дисперсию с кусков, потом вычислить разницу
+        public static string Calculate_stationarity(DataPointCollection data)
+        {
+            Series s = new Series();
+            int block = (int)(data.Count / MainForm.stat_delimiter);
+            string sum = "";
+            for (int i = 0; i < MainForm.stat_delimiter; i++)
+            {
+                s.Points.Clear();
+                for (int j = i * block; j < (i + 1) * block; j++)
+                {
+                    s.Points.AddXY(data[j].XValue, data[j].YValues[0]);
+                }
+                sum += Math.Round(Calculate_avg(s.Points), 2) + "  ";
+            }
+            return sum;
         }
     }
 }

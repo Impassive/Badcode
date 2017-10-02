@@ -15,17 +15,20 @@ namespace TestGraphics
     public partial class MainForm : Form
     {
         private List<ToolStripMenuItem> menus = new List<ToolStripMenuItem>();
-        public static int N = 0;
         public static Series series;
         public static Title title;
         public static Font font;
         public static Series temp_series;
-        public static int left = 0;
-        public static int right = 40;
+        public static int left_X = 0;
+        public static int right_X = 40;
+        public static int min_Y = 0;
+        public static int max_Y = 1;
+        public static bool stat = false;
+        public static bool cor = false;
+        public static int stat_delimiter = 10;
 
         public MainForm()
         {
-            N = 400;
             InitializeComponent();
             chart_init();
         }
@@ -60,16 +63,27 @@ namespace TestGraphics
 
         public void update_analysis()
         {
-            if (analytics_box.Visible == true)
+            if (analytics_box.Visible)
             {
-                middle_label_fill();
-                left_label_fill();
-                right_label_fill();
+                if (!cor)
+                {
+                    middle_label_fill();
+                    left_label_fill();
+                    right_label_fill();
+                    stat = false;
+                }
+                else
+                {
+                    show_correlation_analytics();
+                    cor = false;
+                }
             }
         }
 
         private void randomToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            stat = true;
+            cor = false;
             if (chart.Series.Count > 0)
             {
                 chart_clear();
@@ -81,6 +95,8 @@ namespace TestGraphics
 
         private void customRandomToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            stat = true;
+            cor = false;
             if (chart.Series.Count > 0)
             {
                 chart_clear();
@@ -92,14 +108,15 @@ namespace TestGraphics
 
         private void toolStripTextBox1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (chart.Series.Count > 0)
-            {
-                chart_clear();
-            }
+            cor = false;
             if (e.KeyCode == Keys.Enter)
             {
                 try
                 {
+                    if (chart.Series.Count > 0)
+                    {
+                        chart_clear();
+                    }
                     Chart_plots.chart_graph_random(Int32.Parse(toolStripTextBox1.Text), true);
                 }
                 catch
@@ -107,6 +124,7 @@ namespace TestGraphics
                     toolStripTextBox1.Text = "0";
                 }
             }
+            stat = true;
             chart.Update();
             update_analysis();
         }
@@ -147,17 +165,24 @@ namespace TestGraphics
             analytics_label_right.Text = "";
             analytics_label_right.Text += "|  Асимметрия: " + Math.Round(Analysis.Calculate_asymmetry(series.Points), 2) + "\n\t";
             analytics_label_right.Text += "|  Эксцесс: " + Math.Round(Analysis.Calculate_kurtosis(series.Points), 2) + "\n\t";
-            analytics_label_right.Text += "|  \n\t";
+            if (stat)
+            {
+                analytics_label_right.Text += "|  Стационарность: " +Analysis.Calculate_stationarity(series.Points) + "\n\t";
+            }
             analytics_label_right.Text += "|  \n\t";
         }
+
         private void hidToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Controls.Remove(analytics_box);
             analytics_box.Visible = false;
+            cor = false;
+            stat = false;
         }
 
         private void yaxbToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            cor = false;
             if (chart.Series.Count > 0)
             {
                 chart_clear();
@@ -169,6 +194,7 @@ namespace TestGraphics
 
         private void ybeaxToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            cor = false;
             if (chart.Series.Count > 0)
             {
                 chart_clear();
@@ -180,6 +206,8 @@ namespace TestGraphics
 
         private void gistToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            cor = false;
+            stat = false;
             if (series.ChartType != SeriesChartType.Column)
             {
                 try
@@ -212,6 +240,8 @@ namespace TestGraphics
 
         private void toolStripTextBox2_KeyUp(object sender, KeyEventArgs e)
         {
+            cor = false;
+            stat = false;
             if (e.KeyCode == Keys.Enter)
             {
                 if (series.ChartType != SeriesChartType.Column)
@@ -244,6 +274,7 @@ namespace TestGraphics
 
         private void correlationToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            cor = true;
             temp_series.Color = Color.Red;
             if (chart.Series.Count > 0)
             {
@@ -288,13 +319,13 @@ namespace TestGraphics
             {
                 try
                 {
-                    left = Int32.Parse(toolStripleft.Text);
-                    toolStripleft.Text = "left: " + left;
+                    left_X = Int32.Parse(toolStripleft.Text);
+                    toolStripleft.Text = "left: " + left_X;
                 }
                 catch
                 {
-                    left = 0;
-                    toolStripleft.Text = "left: " + left;
+                    left_X = 0;
+                    toolStripleft.Text = "left: " + left_X;
                 }
             }
         }
@@ -305,13 +336,57 @@ namespace TestGraphics
             {
                 try
                 {
-                    right = Int32.Parse(toolStripright.Text);
-                    toolStripright.Text = "left: " + right;
+                    right_X = Int32.Parse(toolStripright.Text);
+                    toolStripright.Text = "right: " + right_X;
                 }
                 catch
                 {
-                    right = 40;
-                    toolStripright.Text = "left: " + right;
+                    right_X = 40;
+                    toolStripright.Text = "right: " + right_X;
+                }
+            }
+        }
+
+        private void toolStripmin_Click(object sender, EventArgs e)
+        {
+            toolStripmin.Text = "";
+        }
+
+        private void toolStripmax_Click(object sender, EventArgs e)
+        {
+            toolStripmax.Text = "";
+        }
+
+        private void toolStripmin_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    min_Y = Int32.Parse(toolStripmin.Text);
+                    toolStripmin.Text = "min: " + min_Y;
+                }
+                catch
+                {
+                    min_Y = 0;
+                    toolStripmin.Text = "min: " + min_Y;
+                }
+            }
+        }
+
+        private void toolStripmax_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    max_Y = Int32.Parse(toolStripmax.Text);
+                    toolStripmax.Text = "max: " + max_Y;
+                }
+                catch
+                {
+                    max_Y = 1;
+                    toolStripmax.Text = "max: " + max_Y;
                 }
             }
         }
