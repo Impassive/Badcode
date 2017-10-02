@@ -83,13 +83,32 @@ namespace TestGraphics
             double minY = arr.Min();
             double maxY = arr.Max();
             double block = (maxY - minY) / delimiter;
-            int[] gist = new int[delimiter + 1];
+            int[] gist = new int[delimiter];
 
             foreach (var p in arr)
             {
-                gist[(int)(Math.Truncate((p - minY) / block))]++;
+                try
+                {
+                    gist[(int)(Math.Truncate((p - minY) / block))]++;
+                }
+                catch
+                {
+                    gist[gist.Length - 1]++;
+                }
             }
             return gist;
+        }
+
+        public static double Calculate_cross_correlation(DataPointCollection data1, DataPointCollection data2, int lag)
+        {
+            double avg_1 = Calculate_avg(data1);
+            double avg_2 = Calculate_avg(data2);
+            double sum = 0;
+            for (int i = 0; i < data1.Count - lag && i < data2.Count - lag; i++)
+            {
+                sum += (data1[i].YValues[0] - avg_1) * (data2[i + lag].YValues[0] - avg_2);
+            }
+            return sum / data1.Count;
         }
     }
 }

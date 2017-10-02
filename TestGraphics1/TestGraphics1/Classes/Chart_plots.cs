@@ -12,7 +12,7 @@ namespace TestGraphics
     {
         public Chart_plots()
         {
-            
+
         }
 
         public static void chart_graph_1(int a, int b)
@@ -48,7 +48,7 @@ namespace TestGraphics
                 MainForm.series.Points.AddXY(x, a + b * Math.Cos(x));
             }
         }
-        public static void chart_graph_random(int seed, bool rnd_flag)
+        public static void chart_graph_random(int seed, bool rnd_flag = false)
         {
             if (rnd_flag == false)
             {
@@ -62,19 +62,36 @@ namespace TestGraphics
             }
             else
             {
-                MainForm.title.Text = "Custom Random";
+
                 Custom_random r = new Custom_random(seed);
+                MainForm.title.Text = "Custom Random";
                 for (double x = 0; x < MainForm.N / 2; x += 1)
                 {
                     MainForm.series.Points.AddXY(x, r.Next(seed));
                 }
+
             }
         }
         public static void prepare_gist(int[] gist)
         {
-            for (int i=0; i< gist.Length; i++)
+            for (int i = 0; i < gist.Length; i++)
             {
-                MainForm.series.Points.AddXY(i,gist[i]);
+                MainForm.series.Points.AddXY(i, gist[i]);
+            }
+        }
+
+        public static void chart_dual(int seed)
+        {
+            MainForm.title.Text = "Correlation";
+            Random ry = new Random(seed);
+            for (double x = 0; x < MainForm.N / 2; x += 1)
+            {
+                MainForm.series.Points.AddXY(x, Math.Cos(ry.Next()));
+            }
+            Custom_random r = new Custom_random(seed);
+            for (double x = 0; x < MainForm.N / 2; x += 1)
+            {
+                MainForm.temp_series.Points.AddXY(x, r.Next(seed));
             }
         }
     }

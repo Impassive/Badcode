@@ -19,6 +19,7 @@ namespace TestGraphics
         public static Series series;
         public static Title title;
         public static Font font;
+        public static Series temp_series;
 
         public MainForm()
         {
@@ -38,6 +39,7 @@ namespace TestGraphics
             font = new Font("MyFont", 20);
             title = new Title("Hello", Docking.Top, font, Color.Black);
             series = new Series("series1");
+            temp_series = new Series("series2");
             series.ChartType = SeriesChartType.Spline;
             series.ChartArea = "functions";
             chart.Series.Add(series);
@@ -131,20 +133,20 @@ namespace TestGraphics
 
         private void middle_label_fill()
         {
-            analitics_label_middle.Text = "";
-            analitics_label_middle.Text += "|  СО (σ): " + Math.Round(Analysis.Calculate_avg_deviation(series.Points), 2) + "\n\t";
-            analitics_label_middle.Text += "|  3-ий момент: " + Math.Round(Analysis.Calculate_dispersion(series.Points, 3), 2) + "\n\t";
-            analitics_label_middle.Text += "|  4-ый момент: " + Math.Round(Analysis.Calculate_dispersion(series.Points, 4), 2) + "\n\t";
-            analitics_label_middle.Text += "|  \n\t";
+            analytics_label_middle.Text = "";
+            analytics_label_middle.Text += "|  СО (σ): " + Math.Round(Analysis.Calculate_avg_deviation(series.Points), 2) + "\n\t";
+            analytics_label_middle.Text += "|  3-ий момент: " + Math.Round(Analysis.Calculate_dispersion(series.Points, 3), 2) + "\n\t";
+            analytics_label_middle.Text += "|  4-ый момент: " + Math.Round(Analysis.Calculate_dispersion(series.Points, 4), 2) + "\n\t";
+            analytics_label_middle.Text += "|  \n\t";
         }
 
         private void right_label_fill()
         {
-            analitics_label_right.Text = "";
-            analitics_label_right.Text += "|  Асимметрия: " + Math.Round(Analysis.Calculate_asymmetry(series.Points), 2) + "\n\t";
-            analitics_label_right.Text += "|  Эксцесс: " + Math.Round(Analysis.Calculate_kurtosis(series.Points), 2) + "\n\t";
-            analitics_label_right.Text += "|  \n\t";
-            analitics_label_right.Text += "|  \n\t";
+            analytics_label_right.Text = "";
+            analytics_label_right.Text += "|  Асимметрия: " + Math.Round(Analysis.Calculate_asymmetry(series.Points), 2) + "\n\t";
+            analytics_label_right.Text += "|  Эксцесс: " + Math.Round(Analysis.Calculate_kurtosis(series.Points), 2) + "\n\t";
+            analytics_label_right.Text += "|  \n\t";
+            analytics_label_right.Text += "|  \n\t";
         }
         private void hidToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -176,21 +178,96 @@ namespace TestGraphics
 
         private void gistToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            try
+            if (series.ChartType != SeriesChartType.Column)
             {
-                int[] gist = Analysis.prepare_gist_data(series.Points, 10);
-                if (chart.Series.Count > 0)
-                { chart_clear(); }
-                Chart_plots.prepare_gist(gist);
+                try
+                {
+                    int[] gist = Analysis.prepare_gist_data(series.Points, 10);
+                    if (chart.Series.Count > 0)
+                    { chart_clear(); }
+                    Chart_plots.prepare_gist(gist);
+                }
+                catch
+                {
+                    title.Text = "No Data";
+                }
+                series.ChartType = SeriesChartType.Column;
+                chart.Update();
+                Controls.Remove(analytics_box);
+                analytics_box.Visible = false;
             }
-            catch
+            else
             {
-                title.Text = "No Data";
+                chart_clear();
+                title.Text = "Gist of gist, sure?";
             }
-            series.ChartType = SeriesChartType.Column;
+        }
+
+        private void toolStripTextBox2_Click(object sender, EventArgs e)
+        {
+            toolStripTextBox2.Text = "";
+        }
+
+        private void toolStripTextBox2_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (series.ChartType != SeriesChartType.Column)
+                {
+                    try
+                    {
+                        int[] gist = Analysis.prepare_gist_data(series.Points, Int32.Parse(toolStripTextBox2.Text));
+                        if (chart.Series.Count > 0)
+                        { chart_clear(); }
+                        Chart_plots.prepare_gist(gist);
+                    }
+                    catch
+                    {
+                        toolStripTextBox2.Text = "Enter bars num";
+                        title.Text = "No Data";
+                    }
+                    series.ChartType = SeriesChartType.Column;
+                    chart.Update();
+                    Controls.Remove(analytics_box);
+                    analytics_box.Visible = false;
+                }
+                else
+                {
+                    chart_clear();
+                    title.Text = "Gist of gist, sure?";
+                }
+            }
+
+        }
+
+        private void correlationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            temp_series.Color = Color.Red;
+            if (chart.Series.Count > 0)
+            {
+                chart_clear();
+                chart.Series.Remove(temp_series);
+            }
+            temp_series.ChartType = SeriesChartType.Spline;
+            temp_series.ChartArea = "functions";
+            chart.Series.Add(temp_series);
+            Chart_plots.chart_dual(1);
             chart.Update();
-            Controls.Remove(analytics_box);
-            analytics_box.Visible = false;
+            show_correlation_analytics();
+        }
+        private void show_correlation_analytics()
+        {
+            int lag = 10;
+            Controls.Add(analytics_box);
+            analytics_box.Visible = true;
+            analytics_box.Enabled = true;
+            analytics_label_middle.Text = "";
+            analytics_label_right.Text = "";
+            analytics_label_left.Text = "";
+            analytics_label_left.Text += "Auto Correlation for custom random: " + Math.Round(Analysis.Calculate_cross_correlation(temp_series.Points, temp_series.Points, lag), 2) + "\n\t";
+            analytics_label_left.Text += "Auto Correlation for lib random: " + Math.Round(Analysis.Calculate_cross_correlation(series.Points, series.Points, lag), 2) + "\n\t";
+            analytics_label_left.Text += "Cross Correlation cutom-lib: " + Math.Round(Analysis.Calculate_cross_correlation(series.Points, temp_series.Points, lag), 2) + "\n\t";
+            analytics_label_left.Text += "Cross Correlation lib-custom: " + Math.Round(Analysis.Calculate_cross_correlation(temp_series.Points, series.Points, lag), 2) + "\n\t";
         }
     }
 }

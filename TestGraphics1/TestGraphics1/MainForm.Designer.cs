@@ -38,14 +38,16 @@
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
             this.analyticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calculateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gistToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
             this.hidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.graphic_box = new System.Windows.Forms.GroupBox();
-            this.analitics_label_right = new System.Windows.Forms.Label();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.analytics_label_right = new System.Windows.Forms.Label();
             this.analytics_box = new System.Windows.Forms.GroupBox();
-            this.analitics_label_middle = new System.Windows.Forms.Label();
+            this.analytics_label_middle = new System.Windows.Forms.Label();
             this.analytics_label_left = new System.Windows.Forms.Label();
-            this.gistToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.correlationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.graphic_box.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
@@ -58,7 +60,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TestToolStripMenuItem,
             this.func6ToolStripMenuItem,
-            this.analyticsToolStripMenuItem});
+            this.analyticsToolStripMenuItem,
+            this.correlationToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
@@ -141,6 +144,23 @@
             this.calculateToolStripMenuItem.Text = "Calculate";
             this.calculateToolStripMenuItem.Click += new System.EventHandler(this.calculateToolStripMenuItem_Click);
             // 
+            // gistToolStripMenuItem1
+            // 
+            this.gistToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTextBox2});
+            this.gistToolStripMenuItem1.Name = "gistToolStripMenuItem1";
+            this.gistToolStripMenuItem1.Size = new System.Drawing.Size(145, 26);
+            this.gistToolStripMenuItem1.Text = "Gist";
+            this.gistToolStripMenuItem1.Click += new System.EventHandler(this.gistToolStripMenuItem1_Click);
+            // 
+            // toolStripTextBox2
+            // 
+            this.toolStripTextBox2.Name = "toolStripTextBox2";
+            this.toolStripTextBox2.Size = new System.Drawing.Size(100, 27);
+            this.toolStripTextBox2.Text = "Enter bars num";
+            this.toolStripTextBox2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.toolStripTextBox2_KeyUp);
+            this.toolStripTextBox2.Click += new System.EventHandler(this.toolStripTextBox2_Click);
+            // 
             // hidToolStripMenuItem
             // 
             this.hidToolStripMenuItem.Name = "hidToolStripMenuItem";
@@ -160,28 +180,28 @@
             this.graphic_box.TabStop = false;
             this.graphic_box.Text = "Graphic";
             // 
-            // analitics_label_right
-            // 
-            this.analitics_label_right.AutoSize = true;
-            this.analitics_label_right.Dock = System.Windows.Forms.DockStyle.Left;
-            this.analitics_label_right.Location = new System.Drawing.Point(180, 18);
-            this.analitics_label_right.Name = "analitics_label_right";
-            this.analitics_label_right.Size = new System.Drawing.Size(46, 17);
-            this.analitics_label_right.TabIndex = 1;
-            this.analitics_label_right.Text = "label1";
-            // 
             // chart
             // 
-            this.chart.Location = new System.Drawing.Point(191, 43);
+            this.chart.Location = new System.Drawing.Point(218, 32);
             this.chart.Name = "chart";
             this.chart.Size = new System.Drawing.Size(300, 300);
             this.chart.TabIndex = 0;
             this.chart.Text = "chart";
             // 
+            // analytics_label_right
+            // 
+            this.analytics_label_right.AutoSize = true;
+            this.analytics_label_right.Dock = System.Windows.Forms.DockStyle.Left;
+            this.analytics_label_right.Location = new System.Drawing.Point(180, 18);
+            this.analytics_label_right.Name = "analytics_label_right";
+            this.analytics_label_right.Size = new System.Drawing.Size(46, 17);
+            this.analytics_label_right.TabIndex = 1;
+            this.analytics_label_right.Text = "";
+            // 
             // analytics_box
             // 
-            this.analytics_box.Controls.Add(this.analitics_label_right);
-            this.analytics_box.Controls.Add(this.analitics_label_middle);
+            this.analytics_box.Controls.Add(this.analytics_label_right);
+            this.analytics_box.Controls.Add(this.analytics_label_middle);
             this.analytics_box.Controls.Add(this.analytics_label_left);
             this.analytics_box.Location = new System.Drawing.Point(12, 413);
             this.analytics_box.Name = "analytics_box";
@@ -190,15 +210,15 @@
             this.analytics_box.TabStop = false;
             this.analytics_box.Text = "Analytics";
             // 
-            // analitics_label_middle
+            // analytics_label_middle
             // 
-            this.analitics_label_middle.AutoSize = true;
-            this.analitics_label_middle.Dock = System.Windows.Forms.DockStyle.Left;
-            this.analitics_label_middle.Location = new System.Drawing.Point(134, 18);
-            this.analitics_label_middle.Name = "analitics_label_middle";
-            this.analitics_label_middle.Size = new System.Drawing.Size(46, 17);
-            this.analitics_label_middle.TabIndex = 1;
-            this.analitics_label_middle.Text = "label1";
+            this.analytics_label_middle.AutoSize = true;
+            this.analytics_label_middle.Dock = System.Windows.Forms.DockStyle.Left;
+            this.analytics_label_middle.Location = new System.Drawing.Point(134, 18);
+            this.analytics_label_middle.Name = "analytics_label_middle";
+            this.analytics_label_middle.Size = new System.Drawing.Size(46, 17);
+            this.analytics_label_middle.TabIndex = 1;
+            this.analytics_label_middle.Text = "";
             // 
             // analytics_label_left
             // 
@@ -210,12 +230,12 @@
             this.analytics_label_left.TabIndex = 0;
             this.analytics_label_left.Text = "Nothing to compute";
             // 
-            // gistToolStripMenuItem1
+            // correlationToolStripMenuItem
             // 
-            this.gistToolStripMenuItem1.Name = "gistToolStripMenuItem1";
-            this.gistToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
-            this.gistToolStripMenuItem1.Text = "Gist";
-            this.gistToolStripMenuItem1.Click += new System.EventHandler(this.gistToolStripMenuItem1_Click);
+            this.correlationToolStripMenuItem.Name = "correlationToolStripMenuItem";
+            this.correlationToolStripMenuItem.Size = new System.Drawing.Size(95, 24);
+            this.correlationToolStripMenuItem.Text = "Correlation";
+            this.correlationToolStripMenuItem.Click += new System.EventHandler(this.correlationToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -250,14 +270,16 @@
         private System.Windows.Forms.ToolStripMenuItem analyticsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calculateToolStripMenuItem;
         private System.Windows.Forms.GroupBox analytics_box;
-        private System.Windows.Forms.Label analitics_label_middle;
+        private System.Windows.Forms.Label analytics_label_middle;
         private System.Windows.Forms.Label analytics_label_left;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart;
         private System.Windows.Forms.ToolStripMenuItem hidToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem yaxbToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ybeaxToolStripMenuItem;
-        private System.Windows.Forms.Label analitics_label_right;
+        private System.Windows.Forms.Label analytics_label_right;
         private System.Windows.Forms.ToolStripMenuItem gistToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
+        private System.Windows.Forms.ToolStripMenuItem correlationToolStripMenuItem;
     }
 }
 
