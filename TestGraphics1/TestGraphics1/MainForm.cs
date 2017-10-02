@@ -21,7 +21,7 @@ namespace TestGraphics
         public static Font font;
         public static Series temp_series;
         public static int left = 0;
-        public static int right = 5000;
+        public static int right = 40;
 
         public MainForm()
         {
@@ -270,6 +270,50 @@ namespace TestGraphics
             analytics_label_left.Text += "Auto Correlation for lib random: " + Math.Round(Analysis.Calculate_cross_correlation(series.Points, series.Points, lag), 2) + "\n\t";
             analytics_label_left.Text += "Cross Correlation cutom-lib: " + Math.Round(Analysis.Calculate_cross_correlation(series.Points, temp_series.Points, lag), 2) + "\n\t";
             analytics_label_left.Text += "Cross Correlation lib-custom: " + Math.Round(Analysis.Calculate_cross_correlation(temp_series.Points, series.Points, lag), 2) + "\n\t";
+        }
+
+        private void toolStripleft_Click(object sender, EventArgs e)
+        {
+            toolStripleft.Text = "";
+        }
+
+        private void toolStripright_Click(object sender, EventArgs e)
+        {
+            toolStripright.Text = "";
+        }
+
+        private void toolStripleft_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    left = Int32.Parse(toolStripleft.Text);
+                    toolStripleft.Text = "left: " + left;
+                }
+                catch
+                {
+                    left = 0;
+                    toolStripleft.Text = "left: " + left;
+                }
+            }
+        }
+
+        private void toolStripright_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    right = Int32.Parse(toolStripright.Text);
+                    toolStripright.Text = "left: " + right;
+                }
+                catch
+                {
+                    right = 40;
+                    toolStripright.Text = "left: " + right;
+                }
+            }
         }
     }
 }

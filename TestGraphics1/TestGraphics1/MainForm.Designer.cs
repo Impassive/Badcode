@@ -41,13 +41,16 @@
             this.gistToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
             this.hidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.correlationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.graphic_box = new System.Windows.Forms.GroupBox();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.analytics_label_right = new System.Windows.Forms.Label();
             this.analytics_box = new System.Windows.Forms.GroupBox();
             this.analytics_label_middle = new System.Windows.Forms.Label();
             this.analytics_label_left = new System.Windows.Forms.Label();
-            this.correlationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.boundsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripleft = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripright = new System.Windows.Forms.ToolStripTextBox();
             this.menuStrip1.SuspendLayout();
             this.graphic_box.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
@@ -58,6 +61,7 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.boundsToolStripMenuItem,
             this.TestToolStripMenuItem,
             this.func6ToolStripMenuItem,
             this.analyticsToolStripMenuItem,
@@ -168,6 +172,13 @@
             this.hidToolStripMenuItem.Text = "Hide";
             this.hidToolStripMenuItem.Click += new System.EventHandler(this.hidToolStripMenuItem_Click);
             // 
+            // correlationToolStripMenuItem
+            // 
+            this.correlationToolStripMenuItem.Name = "correlationToolStripMenuItem";
+            this.correlationToolStripMenuItem.Size = new System.Drawing.Size(95, 24);
+            this.correlationToolStripMenuItem.Text = "Correlation";
+            this.correlationToolStripMenuItem.Click += new System.EventHandler(this.correlationToolStripMenuItem_Click);
+            // 
             // graphic_box
             // 
             this.graphic_box.AutoSize = true;
@@ -192,11 +203,10 @@
             // 
             this.analytics_label_right.AutoSize = true;
             this.analytics_label_right.Dock = System.Windows.Forms.DockStyle.Left;
-            this.analytics_label_right.Location = new System.Drawing.Point(180, 18);
+            this.analytics_label_right.Location = new System.Drawing.Point(134, 18);
             this.analytics_label_right.Name = "analytics_label_right";
-            this.analytics_label_right.Size = new System.Drawing.Size(46, 17);
+            this.analytics_label_right.Size = new System.Drawing.Size(0, 17);
             this.analytics_label_right.TabIndex = 1;
-            this.analytics_label_right.Text = "";
             // 
             // analytics_box
             // 
@@ -216,9 +226,8 @@
             this.analytics_label_middle.Dock = System.Windows.Forms.DockStyle.Left;
             this.analytics_label_middle.Location = new System.Drawing.Point(134, 18);
             this.analytics_label_middle.Name = "analytics_label_middle";
-            this.analytics_label_middle.Size = new System.Drawing.Size(46, 17);
+            this.analytics_label_middle.Size = new System.Drawing.Size(0, 17);
             this.analytics_label_middle.TabIndex = 1;
-            this.analytics_label_middle.Text = "";
             // 
             // analytics_label_left
             // 
@@ -230,12 +239,30 @@
             this.analytics_label_left.TabIndex = 0;
             this.analytics_label_left.Text = "Nothing to compute";
             // 
-            // correlationToolStripMenuItem
+            // boundsToolStripMenuItem
             // 
-            this.correlationToolStripMenuItem.Name = "correlationToolStripMenuItem";
-            this.correlationToolStripMenuItem.Size = new System.Drawing.Size(95, 24);
-            this.correlationToolStripMenuItem.Text = "Correlation";
-            this.correlationToolStripMenuItem.Click += new System.EventHandler(this.correlationToolStripMenuItem_Click);
+            this.boundsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripleft,
+            this.toolStripright});
+            this.boundsToolStripMenuItem.Name = "boundsToolStripMenuItem";
+            this.boundsToolStripMenuItem.Size = new System.Drawing.Size(70, 24);
+            this.boundsToolStripMenuItem.Text = "Bounds";
+            // 
+            // toolStripleft
+            // 
+            this.toolStripleft.Name = "toolStripleft";
+            this.toolStripleft.Size = new System.Drawing.Size(100, 27);
+            this.toolStripleft.Text = "left: 0";
+            this.toolStripleft.KeyUp += new System.Windows.Forms.KeyEventHandler(this.toolStripleft_KeyUp);
+            this.toolStripleft.Click += new System.EventHandler(this.toolStripleft_Click);
+            // 
+            // toolStripright
+            // 
+            this.toolStripright.Name = "toolStripright";
+            this.toolStripright.Size = new System.Drawing.Size(100, 27);
+            this.toolStripright.Text = "right: 40";
+            this.toolStripright.KeyUp += new System.Windows.Forms.KeyEventHandler(this.toolStripright_KeyUp);
+            this.toolStripright.Click += new System.EventHandler(this.toolStripright_Click);
             // 
             // MainForm
             // 
@@ -280,6 +307,9 @@
         private System.Windows.Forms.ToolStripMenuItem gistToolStripMenuItem1;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
         private System.Windows.Forms.ToolStripMenuItem correlationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem boundsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox toolStripleft;
+        private System.Windows.Forms.ToolStripTextBox toolStripright;
     }
 }
 

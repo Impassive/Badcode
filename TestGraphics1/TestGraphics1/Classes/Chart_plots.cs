@@ -18,7 +18,7 @@ namespace TestGraphics
         public static void chart_graph_1(int a, int b)
         {
             MainForm.title.Text = "y=ax+b";
-            for (double x = 0; x <= MainForm.N; x += 1)
+            for (double x = MainForm.left; x <= MainForm.right; x += 1)
             {
                 MainForm.series.Points.AddXY(x, a * x + b);
             }
@@ -27,7 +27,7 @@ namespace TestGraphics
         public static void chart_graph_2(double a, int b)
         {
             MainForm.title.Text = "y=be^(-ax), a>0";
-            for (double x = 0.1; x <= MainForm.N; x += 1)
+            for (double x = MainForm.left+0.1; x <= MainForm.right; x += 1)
             {
                 MainForm.series.Points.AddXY(x, b * Math.Pow(Math.E, (-a) * x));
             }
@@ -35,15 +35,15 @@ namespace TestGraphics
         public static void chart_graph_3(double a, int b)
         {
             MainForm.title.Text = "Custom";
-            for (double x = 0.1; x <= MainForm.N; x += 1)
+            for (double x = MainForm.left; x <= MainForm.right; x += 1)
             {
                 MainForm.series.Points.AddXY(x, Math.Pow(x, 2));
             }
-            for (double x = MainForm.N * 0.2; x <= MainForm.N * 0.7; x += 1)
+            for (double x = MainForm.N * 0.2; x <= MainForm.right * 0.7; x += 1)
             {
                 MainForm.series.Points.AddXY(x, x);
             }
-            for (double x = MainForm.N * 0.7; x <= MainForm.N; x += 1)
+            for (double x = MainForm.N * 0.7; x <= MainForm.right; x += 1)
             {
                 MainForm.series.Points.AddXY(x, a + b * Math.Cos(x));
             }
@@ -55,7 +55,7 @@ namespace TestGraphics
                 MainForm.title.Text = "Random";
                 //Randomize 
                 Random ry = new Random(seed);
-                for (double x = 0; x < MainForm.N / 2; x += 1)
+                for (double x = MainForm.left; x < MainForm.right; x += 1)
                 {
                     MainForm.series.Points.AddXY(x, ry.NextDouble());
                 }
@@ -65,7 +65,7 @@ namespace TestGraphics
 
                 Custom_random r = new Custom_random(seed);
                 MainForm.title.Text = "Custom Random";
-                for (double x = 0; x < MainForm.N / 2; x += 1)
+                for (double x = MainForm.left; x < MainForm.right; x += 1)
                 {
                     MainForm.series.Points.AddXY(x, r.Next(seed));
                 }
@@ -84,12 +84,12 @@ namespace TestGraphics
         {
             MainForm.title.Text = "Correlation";
             Random ry = new Random(seed);
-            for (double x = 0; x < MainForm.N / 10; x += 1)
+            for (double x = MainForm.left; x < MainForm.right; x += 1)
             {
                 MainForm.series.Points.AddXY(x, ry.NextDouble());
             }
             Custom_random r = new Custom_random(seed);
-            for (double x = 0; x < MainForm.N / 10; x += 1)
+            for (double x = MainForm.left; x < MainForm.right; x += 1)
             {
                 MainForm.temp_series.Points.AddXY(x, r.Next(seed));
             }
