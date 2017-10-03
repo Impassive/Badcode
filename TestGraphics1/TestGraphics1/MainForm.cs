@@ -19,12 +19,12 @@ namespace TestGraphics
         public static Title title;
         public static Font font;
         public static Series temp_series;
+        public static Series cor_series;
         public static int left_X = 0;
         public static int right_X = 40;
         public static int min_Y = 0;
         public static int max_Y = 1;
         public static bool stat = false;
-        public static bool cor = false;
         public static int stat_delimiter = 10;
 
         public MainForm()
@@ -45,6 +45,7 @@ namespace TestGraphics
             title = new Title("Hello", Docking.Top, font, Color.Black);
             series = new Series("series1");
             temp_series = new Series("series2");
+            cor_series = new Series("series3");
             series.ChartType = SeriesChartType.Spline;
             series.ChartArea = "functions";
             chart.Series.Add(series);
@@ -58,6 +59,8 @@ namespace TestGraphics
             {
                 series.Points.Clear();
             }
+            chart.Series.Clear();
+            chart.Series.Add(series);
             series.ChartType = SeriesChartType.Spline;
         }
 
@@ -65,27 +68,19 @@ namespace TestGraphics
         {
             if (analytics_box.Visible)
             {
-                if (!cor)
-                {
-                    middle_label_fill();
-                    left_label_fill();
-                    right_label_fill();
-                    stat = false;
-                }
-                else
-                {
-                    show_correlation_analytics();
-                    cor = false;
-                }
+                middle_label_fill();
+                left_label_fill();
+                right_label_fill();
+                stat = false;
             }
         }
 
         private void randomToolStripMenuItem_Click(object sender, EventArgs e)
         {
             stat = true;
-            cor = false;
             if (chart.Series.Count > 0)
             {
+
                 chart_clear();
             }
             Chart_plots.chart_graph_random(DateTime.Now.Millisecond, false);
@@ -96,7 +91,6 @@ namespace TestGraphics
         private void customRandomToolStripMenuItem_Click(object sender, EventArgs e)
         {
             stat = true;
-            cor = false;
             if (chart.Series.Count > 0)
             {
                 chart_clear();
@@ -108,7 +102,6 @@ namespace TestGraphics
 
         private void toolStripTextBox1_KeyUp(object sender, KeyEventArgs e)
         {
-            cor = false;
             if (e.KeyCode == Keys.Enter)
             {
                 try
@@ -167,22 +160,20 @@ namespace TestGraphics
             analytics_label_right.Text += "|  Эксцесс: " + Math.Round(Analysis.Calculate_kurtosis(series.Points), 2) + "\n\t";
             if (stat)
             {
-                analytics_label_right.Text += "|  Стационарность: " +Analysis.Calculate_stationarity(series.Points) + "\n\t";
+                analytics_label_right.Text += "|  Стационарность (СЗ): " + Analysis.Calculate_stationarity_mean(series.Points) + "\n\t";
+                analytics_label_right.Text += "|  Стационарность (D): " + Analysis.Calculate_stationarity_dispersion(series.Points) + "\n\t";
             }
-            analytics_label_right.Text += "|  \n\t";
         }
 
         private void hidToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Controls.Remove(analytics_box);
             analytics_box.Visible = false;
-            cor = false;
             stat = false;
         }
 
         private void yaxbToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            cor = false;
             if (chart.Series.Count > 0)
             {
                 chart_clear();
@@ -194,7 +185,6 @@ namespace TestGraphics
 
         private void ybeaxToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            cor = false;
             if (chart.Series.Count > 0)
             {
                 chart_clear();
@@ -206,7 +196,6 @@ namespace TestGraphics
 
         private void gistToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            cor = false;
             stat = false;
             if (series.ChartType != SeriesChartType.Column)
             {
@@ -240,7 +229,6 @@ namespace TestGraphics
 
         private void toolStripTextBox2_KeyUp(object sender, KeyEventArgs e)
         {
-            cor = false;
             stat = false;
             if (e.KeyCode == Keys.Enter)
             {
@@ -252,6 +240,7 @@ namespace TestGraphics
                         if (chart.Series.Count > 0)
                         { chart_clear(); }
                         Chart_plots.prepare_gist(gist);
+                        toolStripTextBox2.Text = "Enter bars num";
                     }
                     catch
                     {
@@ -274,33 +263,17 @@ namespace TestGraphics
 
         private void correlationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            cor = true;
             temp_series.Color = Color.Red;
+            hidToolStripMenuItem_Click(sender,e);
             if (chart.Series.Count > 0)
             {
                 chart_clear();
-                chart.Series.Remove(temp_series);
             }
             temp_series.ChartType = SeriesChartType.Spline;
             temp_series.ChartArea = "functions";
             chart.Series.Add(temp_series);
             Chart_plots.chart_dual(DateTime.Now.Millisecond);
             chart.Update();
-            show_correlation_analytics();
-        }
-        private void show_correlation_analytics()
-        {
-            int lag = 10;
-            Controls.Add(analytics_box);
-            analytics_box.Visible = true;
-            analytics_box.Enabled = true;
-            analytics_label_middle.Text = "";
-            analytics_label_right.Text = "";
-            analytics_label_left.Text = "";
-            analytics_label_left.Text += "Auto Correlation for custom random: " + Math.Round(Analysis.Calculate_cross_correlation(temp_series.Points, temp_series.Points, lag), 2) + "\n\t";
-            analytics_label_left.Text += "Auto Correlation for lib random: " + Math.Round(Analysis.Calculate_cross_correlation(series.Points, series.Points, lag), 2) + "\n\t";
-            analytics_label_left.Text += "Cross Correlation cutom-lib: " + Math.Round(Analysis.Calculate_cross_correlation(series.Points, temp_series.Points, lag), 2) + "\n\t";
-            analytics_label_left.Text += "Cross Correlation lib-custom: " + Math.Round(Analysis.Calculate_cross_correlation(temp_series.Points, series.Points, lag), 2) + "\n\t";
         }
 
         private void toolStripleft_Click(object sender, EventArgs e)
@@ -389,6 +362,77 @@ namespace TestGraphics
                     toolStripmax.Text = "max: " + max_Y;
                 }
             }
+        }
+
+        private void customToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            temp_series.Color = Color.Red;
+            hidToolStripMenuItem_Click(sender, e);
+            if (chart.Series.Count > 0)
+            {
+                chart_clear();
+            }
+            temp_series.ChartType = SeriesChartType.Spline;
+            temp_series.ChartArea = "functions";
+            chart.Series.Add(temp_series);
+            Chart_plots.chart_graph_random(DateTime.Now.Millisecond, true);
+            for (int i = 1; i < right_X - 1; i++)
+            {
+                temp_series.Points.AddXY(i, Analysis.Calculate_cross_correlation(series.Points, series.Points, i));
+            }
+            series.Points.Clear();
+            chart.Series.Remove(series);
+            title.Text = "Custom auto-correlation";
+            chart.Update();
+        }
+
+        private void libToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            temp_series.Color = Color.Red;
+            hidToolStripMenuItem_Click(sender, e);
+            if (chart.Series.Count > 0)
+            {
+                chart_clear();
+            }
+            cor_series.ChartType = SeriesChartType.Spline;
+            cor_series.ChartArea = "functions";
+            chart.Series.Add(cor_series);
+            Chart_plots.chart_graph_random(DateTime.Now.Millisecond, false);
+            for (int i = 1; i < right_X - 1; i++)
+            {
+                cor_series.Points.AddXY(i, Analysis.Calculate_cross_correlation(series.Points, series.Points, i));
+            }
+            series.Points.Clear();
+            chart.Series.Remove(series);
+            title.Text = "Lib auto-correlation";
+            chart.Update();
+        }
+
+        private void crossToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            temp_series.Color = Color.Red;
+            hidToolStripMenuItem_Click(sender, e);
+            if (chart.Series.Count > 0)
+            {
+                chart_clear();
+            }
+            cor_series.ChartType = SeriesChartType.Spline;
+            cor_series.ChartArea = "functions";
+            chart.Series.Add(cor_series);
+            temp_series.ChartType = SeriesChartType.Spline;
+            temp_series.ChartArea = "functions";
+            chart.Series.Add(temp_series);
+            Chart_plots.chart_dual(DateTime.Now.Millisecond);
+            for (int i = 1; i < right_X - 1; i++)
+            {
+                cor_series.Points.AddXY(i, Analysis.Calculate_cross_correlation(temp_series.Points, series.Points, i));
+            }
+            series.Points.Clear();
+            temp_series.Points.Clear();
+            chart.Series.Remove(series);
+            chart.Series.Remove(temp_series);
+            title.Text = "Custom-lib auto-correlation";
+            chart.Update();
         }
     }
 }

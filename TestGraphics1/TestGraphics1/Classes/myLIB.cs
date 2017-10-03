@@ -19,7 +19,7 @@ namespace TestGraphics
         public double Next()
         {
 
-            next = Math.Sin(next)*Math.Pow(Math.PI,7);
+            next = Math.Sin(next) * Math.Pow(Math.PI, 7);
 
             return (Math.Abs((next % 100)) / 100);
         }
@@ -115,7 +115,7 @@ namespace TestGraphics
         }
 
         //увеличить N, разбить на 10 кусков, взять среднее или дисперсию с кусков, потом вычислить разницу
-        public static string Calculate_stationarity(DataPointCollection data)
+        public static string Calculate_stationarity_mean(DataPointCollection data)
         {
             Series s = new Series();
             int block = (int)(data.Count / MainForm.stat_delimiter);
@@ -128,6 +128,22 @@ namespace TestGraphics
                     s.Points.AddXY(data[j].XValue, data[j].YValues[0]);
                 }
                 sum += Math.Round(Calculate_avg(s.Points), 2) + "  ";
+            }
+            return sum;
+        }
+        public static string Calculate_stationarity_dispersion(DataPointCollection data)
+        {
+            Series s = new Series();
+            int block = (int)(data.Count / MainForm.stat_delimiter);
+            string sum = "";
+            for (int i = 0; i < MainForm.stat_delimiter; i++)
+            {
+                s.Points.Clear();
+                for (int j = i * block; j < (i + 1) * block; j++)
+                {
+                    s.Points.AddXY(data[j].XValue, data[j].YValues[0]);
+                }
+                sum += Math.Round(Calculate_dispersion(s.Points, 2), 2) + "  ";
             }
             return sum;
         }
