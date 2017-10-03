@@ -145,10 +145,10 @@ namespace TestGraphics
         private void left_label_fill()
         {
             analytics_label_left.Text = "";
-            analytics_label_left.Text += "СЗ: " + Math.Round(Analysis.Calculate_avg(series.Points), 2) + "\n\t";
-            analytics_label_left.Text += "СК: " + Math.Round(Analysis.Calculate_rms(series.Points), 2) + "\n\t";
-            analytics_label_left.Text += "Дисперсия: " + Math.Round(Analysis.Calculate_dispersion(series.Points, 2), 2) + "\n\t";
-            analytics_label_left.Text += "СКО: " + Math.Round(Analysis.Calculate_standard_deviation(series.Points), 2) + "\n\t";
+            analytics_label_left.Text += "СЗ: " + Math.Round(Analysis.Calculate_avg(series.Points), 5) + "\n\t";
+            analytics_label_left.Text += "СК: " + Math.Round(Analysis.Calculate_rms(series.Points), 5) + "\n\t";
+            analytics_label_left.Text += "Дисперсия: " + Math.Round(Analysis.Calculate_dispersion(series.Points, 2), 5) + "\n\t";
+            analytics_label_left.Text += "СКО: " + Math.Round(Analysis.Calculate_standard_deviation(series.Points), 5) + "\n\t";
         }
 
         private void middle_label_fill()
@@ -284,7 +284,7 @@ namespace TestGraphics
             temp_series.ChartType = SeriesChartType.Spline;
             temp_series.ChartArea = "functions";
             chart.Series.Add(temp_series);
-            Chart_plots.chart_dual(1);
+            Chart_plots.chart_dual(DateTime.Now.Millisecond);
             chart.Update();
             show_correlation_analytics();
         }

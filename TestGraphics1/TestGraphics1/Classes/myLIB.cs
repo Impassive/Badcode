@@ -13,13 +13,15 @@ namespace TestGraphics
         private double next = 0;
         public Custom_random(int seed = 55)
         {
-            next = seed % Math.PI;
+            next = (seed * 10 % (Math.PI * Math.E)) + 55000;
         }
 
         public double Next()
         {
-            next += next % (Math.E) + (int)(DateTime.Now.Millisecond);
-            return ((next % 100) / 100);
+
+            next = Math.Sin(next)*Math.Pow(Math.PI,7);
+
+            return (Math.Abs((next % 100)) / 100);
         }
     }
 
