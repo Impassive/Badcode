@@ -13,6 +13,8 @@ namespace PlotBuilder.Sources
         internal static int maxX { get; set; }
         internal static int minY { get; set; }
         internal static int maxY { get; set; }
+        internal static int a { get; set; }
+        internal static int b { get; set; }
         static Plots()
         {
             minX = 0;
@@ -20,19 +22,23 @@ namespace PlotBuilder.Sources
             minY = 0;
             maxY = 100;
         }
-        internal static void Trends(DataPointCollection points, string location)
+        internal static void Trends(DataPointCollection points, string location, int a = 1, int b = 0)
         {
             switch (location)
             {
                 case "ChartAreaTopLeft":
                     points.Clear();
-                    for (int i = 0; i < minX; i++)
+                    for (int i = minX; i < maxX; i++)
                     {
-                        points.AddXY
+                        points.AddXY(i, a * i + b);
                     }
                     break;
                 case "ChartAreaTopRight":
                     points.Clear();
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, a * i + b);
+                    }
                     break;
                 case "ChartAreaBottomLeft":
                     points.Clear();

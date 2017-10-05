@@ -47,7 +47,7 @@
             this.setToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(819, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(983, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -75,9 +75,9 @@
             this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolStrip1.Location = new System.Drawing.Point(0, 424);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 518);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(819, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(983, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -88,7 +88,7 @@
             this.chartBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartBox.Location = new System.Drawing.Point(0, 28);
             this.chartBox.Name = "chartBox";
-            this.chartBox.Size = new System.Drawing.Size(819, 396);
+            this.chartBox.Size = new System.Drawing.Size(983, 490);
             this.chartBox.TabIndex = 2;
             this.chartBox.TabStop = false;
             // 
@@ -97,7 +97,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(819, 449);
+            this.ClientSize = new System.Drawing.Size(983, 543);
             this.Controls.Add(this.chartBox);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);

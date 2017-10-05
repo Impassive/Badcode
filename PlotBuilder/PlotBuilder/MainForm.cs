@@ -14,15 +14,16 @@ namespace PlotBuilder
 {
     public partial class MainForm : Form
     {
+        ManageChart chart;
         public MainForm()
         {
             InitializeComponent();
-            ManageChart chart = new ManageChart(this.chartBox);
+            chart = new ManageChart(this.chartBox);
         }
 
         private void trendsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            chart.chartBuildTrends();
         }
     }
 }

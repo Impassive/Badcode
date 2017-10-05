@@ -13,7 +13,9 @@ namespace PlotBuilder.Sources
     public class ManageChart
     {
         private Chart chart = new Chart();
-        private Font font = new Font("Font", 20);
+        private Font mainFont = new Font("Font", 20);
+        private Font font = new Font("Font", 14,FontStyle.Bold,GraphicsUnit.World);
+        private Title mainTitle = new Title();
         private Title titleTopLeft = new Title();
         private Title titleTopRight = new Title();
         private Title titleBottomLeft = new Title();
@@ -41,24 +43,32 @@ namespace PlotBuilder.Sources
             //set chart areas
 
             //set titles
+            //main title
+            mainTitle.Docking = Docking.Top;
+            mainTitle.Font = mainFont;
+            mainTitle.Text = "Hello!";
             //fill title Top Left
             titleTopLeft.Docking = Docking.Top;
             titleTopLeft.Font = font;
+            titleTopLeft.Alignment = ContentAlignment.TopCenter;
             titleTopLeft.Text = "Hello left top!";
             titleTopLeft.DockedToChartArea = "ChartAreaTopLeft";
             //fill title Top Right
             titleTopRight.Docking = Docking.Top;
             titleTopRight.Font = font;
+            titleTopRight.Alignment = ContentAlignment.TopCenter;
             titleTopRight.Text = "Hello right top!";
             titleTopRight.DockedToChartArea = "ChartAreaTopRight";
             //fill title Bottom Left
             titleBottomLeft.Docking = Docking.Top;
             titleBottomLeft.Font = font;
+            titleBottomLeft.Alignment = ContentAlignment.TopCenter;
             titleBottomLeft.Text = "Hello left bot!";
             titleBottomLeft.DockedToChartArea = "ChartAreaBottomLeft";
             //fill title Bottom Right
             titleBottomRight.Docking = Docking.Top;
             titleBottomRight.Font = font;
+            titleBottomRight.Alignment = ContentAlignment.TopCenter;
             titleBottomRight.Text = "Hello right bot!";
             titleBottomRight.DockedToChartArea = "ChartAreaBottomRight";
 
@@ -77,6 +87,7 @@ namespace PlotBuilder.Sources
             chart.ChartAreas.Add(chartAreaBottomLeft);
             chart.ChartAreas.Add(chartAreaTopRight);
             chart.ChartAreas.Add(chartAreaBottomRight);
+            chart.Titles.Add(mainTitle);
             chart.Titles.Add(titleTopLeft);
             chart.Titles.Add(titleTopRight);
             chart.Titles.Add(titleBottomLeft);
@@ -90,8 +101,15 @@ namespace PlotBuilder.Sources
 
         public void chartBuildTrends()
         {
+            mainTitle.Text = "Trends";
             //fill top left series
-            Plots.Trends(seriesTopLeft.Points,seriesTopLeft.ChartArea);
+            titleTopLeft.Text = "y=x";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            Plots.Trends(seriesTopLeft.Points, seriesTopLeft.ChartArea);
+            //fill top right series
+            titleTopRight.Text = "y=x";
+            seriesTopRight.ChartType = SeriesChartType.Spline;
+            Plots.Trends(seriesTopRight.Points, seriesTopRight.ChartArea);
         }
     }
 }
