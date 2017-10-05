@@ -32,7 +32,9 @@ namespace PlotBuilder.Sources
             chartInit();
             gbox.Controls.Add(chart);
         }
-
+        /// <summary>
+        /// set chart initialization params
+        /// </summary>
         public void chartInit()
         {
 
@@ -84,8 +86,12 @@ namespace PlotBuilder.Sources
             chart.Series.Add(seriesBottomLeft);
             chart.Series.Add(seriesBottomRight);
             chart.Dock = DockStyle.Fill;
-
         }
 
+        public void chartBuildTrends()
+        {
+            //fill top left series
+            Plots.Trends(seriesTopLeft.Points,seriesTopLeft.ChartArea);
+        }
     }
 }

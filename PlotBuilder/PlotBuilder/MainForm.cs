@@ -19,13 +19,10 @@ namespace PlotBuilder
             InitializeComponent();
             ManageChart chart = new ManageChart(this.chartBox);
         }
-        //public static void addControl(Control control)
-        //{
-        //    Controls.Add(control);
-        //}
-        //public static void removeControl(Control control)
-        //{
-        //    Controls.Remove(control);
-        //}
+
+        private void trendsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

@@ -62,6 +62,7 @@
             this.trendsToolStripMenuItem.Name = "trendsToolStripMenuItem";
             this.trendsToolStripMenuItem.Size = new System.Drawing.Size(64, 24);
             this.trendsToolStripMenuItem.Text = "Trends";
+            this.trendsToolStripMenuItem.Click += new System.EventHandler(this.trendsToolStripMenuItem_Click);
             // 
             // setToolStripMenuItem
             // 
