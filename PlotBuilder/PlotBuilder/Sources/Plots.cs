@@ -59,10 +59,16 @@ namespace PlotBuilder.Sources
             }
         }
 
-        internal static void Random(DataPointCollection points, string location)
+        /// <summary>
+        /// Procedure to build random graphics
+        /// </summary>
+        /// <param name="points">series to fill</param>
+        /// <param name="location">in which chartarea build</param>
+        /// <param name="seed">seed for random initialization</param>
+        internal static void Random(DataPointCollection points, string location, int seed = 1)
         {
-            Random r = new Random(1);
-            CustomRandom cr = new CustomRandom(1);
+            Random r = new Random(seed);
+            CustomRandom cr = new CustomRandom(seed);
             switch (location)
             {
                 case "ChartAreaTopLeft":

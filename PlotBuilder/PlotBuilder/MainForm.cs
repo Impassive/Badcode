@@ -19,7 +19,6 @@ namespace PlotBuilder
         {
             InitializeComponent();
             chart = new ManageChart(this.chartBox);
-
         }
 
         private void trendsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -35,6 +34,22 @@ namespace PlotBuilder
         private void crossToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chart.chartBuildRandomAndCrossCorrelation();
+        }
+
+        private void toolStripMinXtxtBox_MouseLeave(object sender, EventArgs e)
+        {
+            try
+            {
+                Plots.minX = Int32.Parse(toolStripMinXtxtBox.Text);
+            }
+            catch { }
+            toolStripMinXtxtBox.Text = "min X: " + Plots.minX.ToString();
+            this.Focus();
+        }
+
+        private void toolStripMinXtxtBox_Click(object sender, EventArgs e)
+        {
+            toolStripMinXtxtBox.Text = "";
         }
     }
 }
