@@ -27,9 +27,14 @@ namespace PlotBuilder
             chart.chartBuildTrends();
         }
 
-        private void randomToolStripMenuItem_Click(object sender, EventArgs e)
+        private void autoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chart.chartBuildRandomAndAutoCorrelation();
+        }
+
+        private void crossToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.chartBuildRandomAndCrossCorrelation();
         }
     }
 }

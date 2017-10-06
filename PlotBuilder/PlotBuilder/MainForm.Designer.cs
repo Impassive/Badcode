@@ -34,6 +34,8 @@
             this.setToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartBox = new System.Windows.Forms.GroupBox();
             this.randomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.crossToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,10 +86,26 @@
             // 
             // randomToolStripMenuItem
             // 
+            this.randomToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.autoToolStripMenuItem,
+            this.crossToolStripMenuItem});
             this.randomToolStripMenuItem.Name = "randomToolStripMenuItem";
             this.randomToolStripMenuItem.Size = new System.Drawing.Size(77, 24);
             this.randomToolStripMenuItem.Text = "Random";
-            this.randomToolStripMenuItem.Click += new System.EventHandler(this.randomToolStripMenuItem_Click);
+            // 
+            // autoToolStripMenuItem
+            // 
+            this.autoToolStripMenuItem.Name = "autoToolStripMenuItem";
+            this.autoToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.autoToolStripMenuItem.Text = "Auto";
+            this.autoToolStripMenuItem.Click += new System.EventHandler(this.autoToolStripMenuItem_Click);
+            // 
+            // crossToolStripMenuItem
+            // 
+            this.crossToolStripMenuItem.Name = "crossToolStripMenuItem";
+            this.crossToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.crossToolStripMenuItem.Text = "Cross";
+            this.crossToolStripMenuItem.Click += new System.EventHandler(this.crossToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -115,6 +133,8 @@
         private System.Windows.Forms.ToolStripMenuItem setToolStripMenuItem;
         private System.Windows.Forms.GroupBox chartBox;
         private System.Windows.Forms.ToolStripMenuItem randomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem autoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem crossToolStripMenuItem;
     }
 }
 

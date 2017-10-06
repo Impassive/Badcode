@@ -99,8 +99,17 @@ namespace PlotBuilder.Sources
             chart.Dock = DockStyle.Fill;
         }
 
+        private void pointsClear()
+        {
+            foreach(var series in chart.Series)
+            {
+                series.Points.Clear();
+            }
+        }
+
         public void chartBuildTrends()
         {
+            pointsClear();
             mainTitle.Text = "Trends";
             //fill top left series
             titleTopLeft.Text = "y=ax+b";
@@ -121,6 +130,7 @@ namespace PlotBuilder.Sources
         }
         public void chartBuildRandomAndAutoCorrelation()
         {
+            pointsClear();
             mainTitle.Text = "Random & Auto Correlation";
             //fill top left series 
             titleTopLeft.Text = "Random";
@@ -138,6 +148,27 @@ namespace PlotBuilder.Sources
             titleBottomRight.Text = "Auto Correlation";
             seriesBottomRight.ChartType = SeriesChartType.Spline;
             Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesBottomLeft.Points, seriesBottomLeft.Points);
+        }
+        public void chartBuildRandomAndCrossCorrelation()
+        {
+            pointsClear();
+            mainTitle.Text = "Random & Cross Correlation";
+            //fill top left series 
+            titleTopLeft.Text = "Random";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            Plots.Random(seriesTopLeft.Points, seriesTopLeft.ChartArea);
+            //fill bottom left series
+            titleBottomLeft.Text = "Custom";
+            seriesBottomLeft.ChartType = SeriesChartType.Spline;
+            Plots.Random(seriesBottomLeft.Points, seriesBottomLeft.ChartArea);
+            //fill top right series - Auto correlation for top left
+            titleTopRight.Text = "Random-custom Cross Correlation";
+            seriesTopRight.ChartType = SeriesChartType.Spline;
+            Plots.AutoCrossCorrelation(seriesTopRight.Points, seriesTopLeft.Points, seriesBottomLeft.Points);
+            //fill bottom right series - Auto correlation for bottom left
+            titleBottomRight.Text = "Custom-random Cross Correlation";
+            seriesBottomRight.ChartType = SeriesChartType.Spline;
+            Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesBottomLeft.Points, seriesTopLeft.Points);
         }
     }
 }
