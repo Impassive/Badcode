@@ -22,7 +22,7 @@ namespace PlotBuilder.Sources
             minY = 0;
             maxY = 10;
         }
-        internal static void Trends(DataPointCollection points, string location, int a = 1, int b = 0)
+        internal static void Trends(DataPointCollection points, string location, double a = 1, double b = 0)
         {
             switch (location)
             {
@@ -49,9 +49,9 @@ namespace PlotBuilder.Sources
                     break;
                 case "ChartAreaBottomRight":
                     points.Clear();
-                    for (int i = minX; i < maxX; i++)
+                    for (int i = minX; i < maxX-5; i++)
                     {
-                        points.AddXY(i, b * Math.Pow(Math.E, (a) * i));
+                        points.AddXY(i, b * Math.Pow(Math.E, (-a) * i));
                     }
                     break;
                 default:

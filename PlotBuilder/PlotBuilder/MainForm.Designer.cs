@@ -88,18 +88,24 @@
             this.toolStripMaxXtxtBox.Name = "toolStripMaxXtxtBox";
             this.toolStripMaxXtxtBox.Size = new System.Drawing.Size(100, 27);
             this.toolStripMaxXtxtBox.Text = "max X: ";
+            this.toolStripMaxXtxtBox.Click += new System.EventHandler(this.toolStripMaxXtxtBox_Click);
+            this.toolStripMaxXtxtBox.MouseLeave += new System.EventHandler(this.toolStripMaxXtxtBox_MouseLeave);
             // 
             // toolStripMinYtxtBox
             // 
             this.toolStripMinYtxtBox.Name = "toolStripMinYtxtBox";
             this.toolStripMinYtxtBox.Size = new System.Drawing.Size(100, 27);
             this.toolStripMinYtxtBox.Text = "min Y: ";
+            this.toolStripMinYtxtBox.Click += new System.EventHandler(this.toolStripMinYtxtBox_Click);
+            this.toolStripMinYtxtBox.MouseLeave += new System.EventHandler(this.toolStripMinYtxtBox_MouseLeave);
             // 
             // toolStripMaxYtxtBox
             // 
             this.toolStripMaxYtxtBox.Name = "toolStripMaxYtxtBox";
             this.toolStripMaxYtxtBox.Size = new System.Drawing.Size(100, 27);
             this.toolStripMaxYtxtBox.Text = "max Y: ";
+            this.toolStripMaxYtxtBox.Click += new System.EventHandler(this.toolStripMaxYtxtBox_Click);
+            this.toolStripMaxYtxtBox.MouseLeave += new System.EventHandler(this.toolStripMaxYtxtBox_MouseLeave);
             // 
             // trendsToolStripMenuItem
             // 
@@ -153,6 +159,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "PlotBuilder";
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
