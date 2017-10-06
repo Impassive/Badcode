@@ -18,9 +18,9 @@ namespace PlotBuilder.Sources
         static Plots()
         {
             minX = 0;
-            maxX = 1000;
+            maxX = 40;
             minY = 0;
-            maxY = 100;
+            maxY = 10;
         }
         internal static void Trends(DataPointCollection points, string location, int a = 1, int b = 0)
         {
@@ -42,15 +42,62 @@ namespace PlotBuilder.Sources
                     break;
                 case "ChartAreaBottomLeft":
                     points.Clear();
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, b * Math.Pow(Math.E, (-a) * i));
+                    }
                     break;
                 case "ChartAreaBottomRight":
                     points.Clear();
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, b * Math.Pow(Math.E, (a) * i));
+                    }
                     break;
                 default:
                     break;
             }
         }
 
+        internal static void Random(DataPointCollection points, string location)
+        {
+            Random r = new Random(1);
+            CustomRandom cr = new CustomRandom(1);
+            switch (location)
+            {
+                case "ChartAreaTopLeft":
+                    points.Clear();
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, r.NextDouble());
+                    }
+                    break;
+                case "ChartAreaBottomLeft":
+                    points.Clear();
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, cr.Next());
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        /// <summary>
+        /// Procedure to build Correlation graphic
+        /// </summary>
+        /// <param name="points">result series where graphic will build</param>
+        /// <param name="pointsFirst">first series to correlate</param>
+        /// <param name="pointsSecond">second series to correlate</param>
+        internal static void AutoCrossCorrelation(DataPointCollection points, DataPointCollection pointsFirst, DataPointCollection pointsSecond)
+        {
+            points.Clear();
+            for (int i = minX; i < maxX; i++)
+            {
+                points.AddXY(i, Statistics.CrossCorrelation(pointsFirst, pointsSecond, i));
+            }
+        }
     }
-
 }
+
+

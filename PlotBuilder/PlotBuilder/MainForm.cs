@@ -19,11 +19,17 @@ namespace PlotBuilder
         {
             InitializeComponent();
             chart = new ManageChart(this.chartBox);
+
         }
 
         private void trendsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chart.chartBuildTrends();
+        }
+
+        private void randomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.chartBuildRandomAndAutoCorrelation();
         }
     }
 }
