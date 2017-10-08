@@ -14,6 +14,7 @@ namespace PlotBuilder.Sources
     public class ManageChart
     {
         private Chart chart = new Chart();
+        private ToolTip tooltip = new ToolTip();
         private Font mainFont = new Font("Font", 20);
         private Font font = new Font("Font", 14, FontStyle.Bold, GraphicsUnit.World);
         private Title mainTitle = new Title();
@@ -29,11 +30,33 @@ namespace PlotBuilder.Sources
         private Series seriesTopRight = new Series("seriesTopRight", 1);
         private Series seriesBottomLeft = new Series("seriesBottomLeft", 1);
         private Series seriesBottomRight = new Series("seriesBottomRight", 1);
-
+        private string messageTopLeft { get; set; }
+        private string messageTopRight { get; set; }
+        private string messageBottomLeft { get; set; }
+        private string messageBottomRight { get; set; }
         public ManageChart(GroupBox gbox)
         {
             chartInit();
+            toolTipInit();
             gbox.Controls.Add(chart);
+
+            //TO TEST PURPOSE
+            messageTopLeft = "top LEFT";
+            messageTopRight = "top RIGHT";
+            messageBottomLeft = "bottom LEFT";
+            messageBottomRight = "bottom RIGHT";
+        }
+        public void toolTipInit()
+        {
+            tooltip.Active = false;
+            tooltip.InitialDelay = 0;
+            tooltip.UseAnimation = true;
+            tooltip.ShowAlways = true;
+            tooltip.ToolTipIcon = ToolTipIcon.Info;
+            tooltip.AutoPopDelay = 20000;
+            tooltip.ReshowDelay = 750;
+            tooltip.ToolTipTitle = "Analytics:";
+            tooltip.SetToolTip(chart, "Computing");
         }
         /// <summary>
         /// set chart initialization params
@@ -97,9 +120,45 @@ namespace PlotBuilder.Sources
             chart.Series.Add(seriesBottomLeft);
             chart.Series.Add(seriesBottomRight);
             chart.Dock = DockStyle.Fill;
+            chart.MouseClick += Chart_MouseClick;
             //disable margin on graphics
             foreach (var chartAreas in chart.ChartAreas)
                 chartAreas.AxisX.IsMarginVisible = false;
+        }
+
+        //Event that represents tooltip text with chart area
+        private void Chart_MouseClick(object sender, MouseEventArgs e)
+        {
+            tooltip.RemoveAll();
+            tooltip.Active = true;
+            if (e.X > chart.Location.X && e.X < chart.Location.X + chart.Size.Width / 2)
+            {
+                //left panel
+                if (e.Y > chart.Location.Y && e.Y < chart.Location.Y + chart.Size.Height / 2)
+                {
+                    messageTopLeft = Statistics.GetStatistics(seriesTopLeft.Points, titleTopLeft.Text.Contains("Random"));
+                    tooltip.SetToolTip(chart, messageTopLeft);
+                }
+                else
+                {
+                    messageBottomLeft = Statistics.GetStatistics(seriesBottomLeft.Points, titleBottomLeft.Text.Contains("Custom"));
+                    tooltip.SetToolTip(chart, messageBottomLeft);
+                }
+            }
+            else
+            {
+                //right panel
+                if (e.Y > chart.Location.Y && e.Y < chart.Location.Y + chart.Size.Height / 2)
+                {
+                    messageTopRight = Statistics.GetStatistics(seriesTopRight.Points, false, titleTopRight.Text.Contains("Correlation"));
+                    tooltip.SetToolTip(chart, messageTopRight);
+                }
+                else
+                {
+                    messageBottomRight = Statistics.GetStatistics(seriesBottomRight.Points, false, titleBottomRight.Text.Contains("Correlation"));
+                    tooltip.SetToolTip(chart, messageBottomRight);
+                }
+            }
         }
 
         private void pointsClear()
@@ -192,7 +251,7 @@ namespace PlotBuilder.Sources
             {
                 foreach (var series in chart.Series)
                 {
-                    series.BorderWidth = 3;
+                    series.BorderWidth = 4;
                 }
             }
             else
