@@ -10,7 +10,12 @@ namespace PlotBuilder.Sources
     public static class Statistics
     {
 
-        //Собрать статистику
+        /// <summary>
+        /// collect statistic
+        /// </summary>
+        /// <param name="points">DataPoints to caclculate</param>
+        /// <param name="stationarity">include stationarity to statistics</param>
+        /// <returns></returns>
         public static string GetStatistics(DataPointCollection points, bool stationarity = false)
         {
             string message = "";
