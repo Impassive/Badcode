@@ -11,25 +11,22 @@ namespace PlotBuilder.Sources
     {
 
         //Собрать статистику
-        public static string GetStatistics(DataPointCollection points, bool stationarity = false, bool correlation = false)
+        public static string GetStatistics(DataPointCollection points, bool stationarity = false)
         {
             string message = "";
-            if (!correlation)
+            message = "Среднее: " + Math.Round(CalcAVG(points), 2) + "\n";
+            message += "СК: " + Math.Round(CalcRMS(points), 2) + "\n";
+            message += "Дисперсия: " + Math.Round(CalcDispersion(points), 2) + "\n";
+            message += "СКО: " + Math.Round(CalcStandardDeviation(points), 2) + "\n";
+            message += "СО (σ): " + Math.Round(CalcAvgDeviation(points), 2) + "\n";
+            message += "3-ий момент: " + Math.Round(CalcDispersion(points, 3), 2) + "\n";
+            message += "4-ый момент: " + Math.Round(CalcDispersion(points, 4), 2) + "\n";
+            message += "Асимметрия: " + Math.Round(CalcAsymmetry(points), 2) + "\n";
+            message += "Эксцесс: " + Math.Round(CalcKurtosis(points), 2) + "\n";
+            if (stationarity)
             {
-                message = "Среднее: " + Math.Round(CalcAVG(points), 2) + "\n";
-                message += "СК: " + Math.Round(CalcRMS(points), 2) + "\n";
-                message += "Дисперсия: " + Math.Round(CalcDispersion(points), 2) + "\n";
-                message += "СКО: " + Math.Round(CalcStandardDeviation(points), 2) + "\n";
-                message += "СО: " + Math.Round(CalcAvgDeviation(points), 2) + "\n";
-                message += "3-ий момент: " + Math.Round(CalcDispersion(points, 3), 2) + "\n";
-                message += "4-ый момент: " + Math.Round(CalcDispersion(points, 4), 2) + "\n";
-                message += "Асимметрия: " + Math.Round(CalcAsymmetry(points), 2) + "\n";
-                message += "Эксцесс: " + Math.Round(CalcKurtosis(points), 2) + "\n";
-                if (stationarity)
-                {
-                    message += "Стационарность (avg): " + Math.Round(CalcStatMean(points), 2) + "\n";
-                    message += "Стационраность (dispersion): " + Math.Round(CalcStatDispersion(points), 2) + "\n";
-                }
+                message += "Стационарность (avg): " + Math.Round(CalcStatMean(points), 2) + "\n";
+                message += "Стационраность (dispersion): " + Math.Round(CalcStatDispersion(points), 2) + "\n";
             }
             return message;
         }

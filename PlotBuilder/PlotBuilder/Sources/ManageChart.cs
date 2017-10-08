@@ -136,12 +136,10 @@ namespace PlotBuilder.Sources
                 //left panel
                 if (e.Y > chart.Location.Y && e.Y < chart.Location.Y + chart.Size.Height / 2)
                 {
-                    messageTopLeft = Statistics.GetStatistics(seriesTopLeft.Points, titleTopLeft.Text.Contains("Random"));
                     tooltip.SetToolTip(chart, messageTopLeft);
                 }
                 else
                 {
-                    messageBottomLeft = Statistics.GetStatistics(seriesBottomLeft.Points, titleBottomLeft.Text.Contains("Custom"));
                     tooltip.SetToolTip(chart, messageBottomLeft);
                 }
             }
@@ -150,12 +148,10 @@ namespace PlotBuilder.Sources
                 //right panel
                 if (e.Y > chart.Location.Y && e.Y < chart.Location.Y + chart.Size.Height / 2)
                 {
-                    messageTopRight = Statistics.GetStatistics(seriesTopRight.Points, false, titleTopRight.Text.Contains("Correlation"));
                     tooltip.SetToolTip(chart, messageTopRight);
                 }
                 else
                 {
-                    messageBottomRight = Statistics.GetStatistics(seriesBottomRight.Points, false, titleBottomRight.Text.Contains("Correlation"));
                     tooltip.SetToolTip(chart, messageBottomRight);
                 }
             }
@@ -178,21 +174,25 @@ namespace PlotBuilder.Sources
             seriesTopLeft.ChartType = SeriesChartType.Spline;
             seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
             Plots.Trends(seriesTopLeft.Points, seriesTopLeft.ChartArea);
+            messageTopLeft = Statistics.GetStatistics(seriesTopLeft.Points);
             //fill top right series
             titleTopRight.Text = "y=(-a)x+b";
             seriesTopRight.ChartType = SeriesChartType.Spline;
             seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
             Plots.Trends(seriesTopRight.Points, seriesTopRight.ChartArea);
+            messageTopRight = Statistics.GetStatistics(seriesTopRight.Points);
             //fill bottom left series
             titleBottomLeft.Text = "y=be^(-ax)";
             seriesBottomLeft.ChartType = SeriesChartType.Spline;
             seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
             Plots.Trends(seriesBottomLeft.Points, seriesBottomLeft.ChartArea, 0.1, 1);
+            messageBottomLeft = Statistics.GetStatistics(seriesBottomLeft.Points);
             //fill bottom right series
             titleBottomRight.Text = "y=be^(ax)";
             seriesBottomRight.ChartType = SeriesChartType.Spline;
             seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
             Plots.Trends(seriesBottomRight.Points, seriesBottomRight.ChartArea, 0.1, 0.1);
+            messageBottomRight = Statistics.GetStatistics(seriesBottomRight.Points);
         }
         public void chartBuildRandomAndAutoCorrelation()
         {
@@ -203,21 +203,25 @@ namespace PlotBuilder.Sources
             seriesTopLeft.ChartType = SeriesChartType.Spline;
             seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
             Plots.Random(seriesTopLeft.Points, seriesTopLeft.ChartArea);
+            messageTopLeft = Statistics.GetStatistics(seriesTopLeft.Points, true);
             //fill top right series - Auto correlation for top left
             titleTopRight.Text = "Auto Correlation";
             seriesTopRight.ChartType = SeriesChartType.Spline;
             seriesTopRight.BorderDashStyle = ChartDashStyle.DashDot;
             Plots.AutoCrossCorrelation(seriesTopRight.Points, seriesTopLeft.Points, seriesTopLeft.Points);
+            messageTopRight = "Auto Correlation";
             //fill bottom left series
             titleBottomLeft.Text = "Custom";
             seriesBottomLeft.ChartType = SeriesChartType.Spline;
             seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
             Plots.Random(seriesBottomLeft.Points, seriesBottomLeft.ChartArea);
+            messageBottomLeft = Statistics.GetStatistics(seriesBottomLeft.Points, true);
             //fill bottom right series - Auto correlation for bottom left
             titleBottomRight.Text = "Auto Correlation";
             seriesBottomRight.ChartType = SeriesChartType.Spline;
             seriesBottomRight.BorderDashStyle = ChartDashStyle.DashDot;
             Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesBottomLeft.Points, seriesBottomLeft.Points);
+            messageBottomRight = "Auto Correlation";
         }
         public void chartBuildRandomAndCrossCorrelation()
         {
@@ -228,21 +232,25 @@ namespace PlotBuilder.Sources
             seriesTopLeft.ChartType = SeriesChartType.Spline;
             seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
             Plots.Random(seriesTopLeft.Points, seriesTopLeft.ChartArea);
+            messageTopLeft = Statistics.GetStatistics(seriesTopLeft.Points, true);
             //fill bottom left series
             titleBottomLeft.Text = "Custom";
             seriesBottomLeft.ChartType = SeriesChartType.Spline;
             seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
             Plots.Random(seriesBottomLeft.Points, seriesBottomLeft.ChartArea);
+            messageBottomLeft = Statistics.GetStatistics(seriesBottomLeft.Points, true);
             //fill top right series - Auto correlation for top left
             titleTopRight.Text = "Random-custom Cross Correlation";
             seriesTopRight.ChartType = SeriesChartType.Spline;
             seriesTopRight.BorderDashStyle = ChartDashStyle.DashDot;
             Plots.AutoCrossCorrelation(seriesTopRight.Points, seriesTopLeft.Points, seriesBottomLeft.Points);
+            messageTopRight = "Auto Correlation";
             //fill bottom right series - Auto correlation for bottom left
             titleBottomRight.Text = "Custom-random Cross Correlation";
             seriesBottomRight.ChartType = SeriesChartType.Spline;
             seriesBottomRight.BorderDashStyle = ChartDashStyle.DashDot;
             Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesBottomLeft.Points, seriesTopLeft.Points);
+            messageBottomRight = "Auto Correlation";
         }
 
         public void chartMaximazed(bool maximazed = true)
