@@ -116,5 +116,10 @@ namespace PlotBuilder
         {
             chart.chartBuildRandomAndGist();
         }
+
+        private void discrToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.chartBuildDiscr();
+        }
     }
 }

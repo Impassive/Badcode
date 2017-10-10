@@ -253,13 +253,14 @@ namespace PlotBuilder.Sources
             messageBottomRight = "Auto Correlation";
         }
 
+        //EDITED!!
         public void chartMaximazed(bool maximazed = true)
         {
             if (maximazed)
             {
                 foreach (var series in chart.Series)
                 {
-                    series.BorderWidth = 4;
+                    series.BorderWidth = 1;
                 }
             }
             else
@@ -299,6 +300,29 @@ namespace PlotBuilder.Sources
             seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
             Plots.Gist(seriesBottomRight.Points, seriesBottomLeft.Points);
             messageBottomRight = "Custom gist";
+        }
+
+        public void chartBuildDiscr()
+        {
+            pointsClear();
+            mainTitle.Text = "Discr";
+            //fill top left series 
+            titleTopLeft.Text = "Discr";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.Discr(seriesTopLeft.Points, seriesTopLeft.ChartArea);
+            //fill top right series - gist of top right
+            titleTopRight.Text = "Harm";
+            seriesTopRight.ChartType = SeriesChartType.Spline;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.Discr(seriesTopRight.Points, seriesTopRight.ChartArea);
+            //fill bottom left series - gist of bottom left
+            titleBottomLeft.Text = "Harm + Spike + Shift";
+            seriesBottomLeft.ChartType = SeriesChartType.Spline;
+            seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.Discr(seriesBottomLeft.Points, seriesBottomLeft.ChartArea);
+            Plots.Spike(seriesBottomLeft.Points,0.05,500);
+            Plots.Shift(seriesBottomLeft.Points,1000);
         }
     }
 }

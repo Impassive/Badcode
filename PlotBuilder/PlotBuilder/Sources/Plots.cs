@@ -18,7 +18,7 @@ namespace PlotBuilder.Sources
         static Plots()
         {
             minX = 0;
-            maxX = 40;
+            maxX = 1000;
             minY = 0;
             maxY = 10;
         }
@@ -127,6 +127,54 @@ namespace PlotBuilder.Sources
             for (int i = 0; i < gist.Length; i++)
             {
                 result.AddXY(i, gist[i]);
+            }
+        }
+
+        internal static void Discr(DataPointCollection points, string location, double a = 1, double d = 0.001)
+        {
+            switch (location)
+            {
+                case "ChartAreaTopLeft":
+                    points.Clear();
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, a * 100 * Math.Sin(10 * Math.PI * 57 * i * d));
+                    }
+                    break;
+                case "ChartAreaTopRight":
+                    points.Clear();
+                    for (double i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, ((a * 20 * Math.Sin(2 * Math.PI * 5 * i * d)) + (a * 100 * Math.Sin(2 * Math.PI * 57 * i * d)) + (a * 35 * Math.Sin(2 * Math.PI * 190 * i * d))));
+                    }
+                    break;
+                case "ChartAreaBottomLeft":
+                    points.Clear();
+                    for (double i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, ((a * 20 * Math.Sin(2 * Math.PI * 5 * i * d)) + (a * 100 * Math.Sin(2 * Math.PI * 57 * i * d)) + (a * 35 * Math.Sin(2 * Math.PI * 190 * i * d))));
+                    }
+                    break;
+            }
+        }
+
+        //отпрвленной точке увеличиваем значение на сигму
+        internal static void Spike(DataPointCollection points, double chance = 0.5, double sigma = 10000)
+        {
+            Random r = new Random(400);
+            foreach (var point in points)
+            {
+                if (r.NextDouble() < chance)
+                {
+                    point.YValues[0] += sigma;
+                }
+            }
+        }
+        internal static void Shift(DataPointCollection points, double c = 1)
+        {
+            foreach (var point in points)
+            {
+                point.YValues[0] += c;
             }
         }
     }
