@@ -40,6 +40,7 @@
             this.autoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.crossToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartBox = new System.Windows.Forms.GroupBox();
+            this.gistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -118,7 +119,8 @@
             // 
             this.randomToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.autoToolStripMenuItem,
-            this.crossToolStripMenuItem});
+            this.crossToolStripMenuItem,
+            this.gistToolStripMenuItem});
             this.randomToolStripMenuItem.Name = "randomToolStripMenuItem";
             this.randomToolStripMenuItem.Size = new System.Drawing.Size(77, 24);
             this.randomToolStripMenuItem.Text = "Random";
@@ -126,14 +128,14 @@
             // autoToolStripMenuItem
             // 
             this.autoToolStripMenuItem.Name = "autoToolStripMenuItem";
-            this.autoToolStripMenuItem.Size = new System.Drawing.Size(119, 26);
+            this.autoToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.autoToolStripMenuItem.Text = "Auto";
             this.autoToolStripMenuItem.Click += new System.EventHandler(this.autoToolStripMenuItem_Click);
             // 
             // crossToolStripMenuItem
             // 
             this.crossToolStripMenuItem.Name = "crossToolStripMenuItem";
-            this.crossToolStripMenuItem.Size = new System.Drawing.Size(119, 26);
+            this.crossToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.crossToolStripMenuItem.Text = "Cross";
             this.crossToolStripMenuItem.Click += new System.EventHandler(this.crossToolStripMenuItem_Click);
             // 
@@ -147,6 +149,13 @@
             this.chartBox.Size = new System.Drawing.Size(983, 515);
             this.chartBox.TabIndex = 2;
             this.chartBox.TabStop = false;
+            // 
+            // gistToolStripMenuItem
+            // 
+            this.gistToolStripMenuItem.Name = "gistToolStripMenuItem";
+            this.gistToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.gistToolStripMenuItem.Text = "Gist";
+            this.gistToolStripMenuItem.Click += new System.EventHandler(this.gistToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -181,6 +190,7 @@
         private System.Windows.Forms.ToolStripTextBox toolStripMaxXtxtBox;
         private System.Windows.Forms.ToolStripTextBox toolStripMinYtxtBox;
         private System.Windows.Forms.ToolStripTextBox toolStripMaxYtxtBox;
+        private System.Windows.Forms.ToolStripMenuItem gistToolStripMenuItem;
     }
 }
 

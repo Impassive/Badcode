@@ -270,5 +270,35 @@ namespace PlotBuilder.Sources
                 }
             }
         }
+
+        public void chartBuildRandomAndGist()
+        {
+            pointsClear();
+            mainTitle.Text = "Random & Gist";
+            //fill top left series 
+            titleTopLeft.Text = "Random";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.Random(seriesTopLeft.Points, seriesTopLeft.ChartArea);
+            messageTopLeft = Statistics.GetStatistics(seriesTopLeft.Points, true);
+            //fill bottom left series
+            titleBottomLeft.Text = "Custom";
+            seriesBottomLeft.ChartType = SeriesChartType.Spline;
+            seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.Random(seriesBottomLeft.Points, seriesBottomLeft.ChartArea);
+            messageBottomLeft = Statistics.GetStatistics(seriesBottomLeft.Points, true);
+            //fill top right series - gist of top left
+            titleTopRight.Text = "Random Gist";
+            seriesTopRight.ChartType = SeriesChartType.Column;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.Gist(seriesTopRight.Points, seriesTopLeft.Points);
+            messageTopRight = "Random gist";
+            //fill bottom right series - gist of bottom left
+            titleBottomRight.Text = "Custom Gist";
+            seriesBottomRight.ChartType = SeriesChartType.Column;
+            seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.Gist(seriesBottomRight.Points, seriesBottomLeft.Points);
+            messageBottomRight = "Custom gist";
+        }
     }
 }

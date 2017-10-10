@@ -49,7 +49,7 @@ namespace PlotBuilder.Sources
                     break;
                 case "ChartAreaBottomRight":
                     points.Clear();
-                    for (int i = minX; i < maxX-5; i++)
+                    for (int i = minX; i < maxX - 5; i++)
                     {
                         points.AddXY(i, b * Math.Pow(Math.E, (-a) * i));
                     }
@@ -101,6 +101,32 @@ namespace PlotBuilder.Sources
             for (int i = minX; i < maxX; i++)
             {
                 points.AddXY(i, Statistics.CrossCorrelation(pointsFirst, pointsSecond, i));
+            }
+        }
+
+        internal static void Gist(DataPointCollection result, DataPointCollection pointsSource, int gistDelimiter = 10)
+        {
+            double[] arr = new double[result.Count];
+            arr = pointsSource.Select(y => y.YValues[0]).ToArray();
+            double minY = arr.Min();
+            double maxY = arr.Max();
+            //Разброс значений
+            double block = (maxY - minY) / gistDelimiter;
+            int[] gist = new int[gistDelimiter];
+            foreach (var p in arr)
+            {
+                try
+                {
+                    gist[(int)(Math.Truncate((p - minY) / block))]++;
+                }
+                catch
+                {
+                    gist[gist.Length - 1]++;
+                }
+            }
+            for (int i = 0; i < gist.Length; i++)
+            {
+                result.AddXY(i, gist[i]);
             }
         }
     }

@@ -111,5 +111,10 @@ namespace PlotBuilder
             }
             catch { }
         }
+
+        private void gistToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.chartBuildRandomAndGist();
+        }
     }
 }
