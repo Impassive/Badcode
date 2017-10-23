@@ -40,8 +40,9 @@
             this.autoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.crossToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.chartBox = new System.Windows.Forms.GroupBox();
             this.discrToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chartBox = new System.Windows.Forms.GroupBox();
+            this.fourierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,7 +55,8 @@
             this.setToolStripMenuItem,
             this.trendsToolStripMenuItem,
             this.randomToolStripMenuItem,
-            this.discrToolStripMenuItem});
+            this.discrToolStripMenuItem,
+            this.fourierToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(983, 28);
@@ -148,6 +150,13 @@
             this.gistToolStripMenuItem.Text = "Gist";
             this.gistToolStripMenuItem.Click += new System.EventHandler(this.gistToolStripMenuItem_Click);
             // 
+            // discrToolStripMenuItem
+            // 
+            this.discrToolStripMenuItem.Name = "discrToolStripMenuItem";
+            this.discrToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
+            this.discrToolStripMenuItem.Text = "Discr";
+            this.discrToolStripMenuItem.Click += new System.EventHandler(this.discrToolStripMenuItem_Click);
+            // 
             // chartBox
             // 
             this.chartBox.AutoSize = true;
@@ -159,12 +168,12 @@
             this.chartBox.TabIndex = 2;
             this.chartBox.TabStop = false;
             // 
-            // discrToolStripMenuItem
+            // fourierToolStripMenuItem
             // 
-            this.discrToolStripMenuItem.Name = "discrToolStripMenuItem";
-            this.discrToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
-            this.discrToolStripMenuItem.Text = "Discr";
-            this.discrToolStripMenuItem.Click += new System.EventHandler(this.discrToolStripMenuItem_Click);
+            this.fourierToolStripMenuItem.Name = "fourierToolStripMenuItem";
+            this.fourierToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
+            this.fourierToolStripMenuItem.Text = "Fourier";
+            this.fourierToolStripMenuItem.Click += new System.EventHandler(this.fourierToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -201,6 +210,7 @@
         private System.Windows.Forms.ToolStripTextBox toolStripMaxYtxtBox;
         private System.Windows.Forms.ToolStripMenuItem gistToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem discrToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fourierToolStripMenuItem;
     }
 }
 

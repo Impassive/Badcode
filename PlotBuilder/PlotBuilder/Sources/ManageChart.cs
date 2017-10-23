@@ -165,6 +165,25 @@ namespace PlotBuilder.Sources
             }
         }
 
+        //EDITED!!
+        public void chartMaximazed(bool maximazed = true)
+        {
+            if (maximazed && !mainTitle.Text.Contains("Discr"))
+            {
+                foreach (var series in chart.Series)
+                {
+                    series.BorderWidth = 2;
+                }
+            }
+            else
+            {
+                foreach (var series in chart.Series)
+                {
+                    series.BorderWidth = 1;
+                }
+            }
+        }
+
         public void chartBuildTrends()
         {
             pointsClear();
@@ -194,6 +213,7 @@ namespace PlotBuilder.Sources
             Plots.Trends(seriesBottomRight.Points, seriesBottomRight.ChartArea, 0.1, 0.1);
             messageBottomRight = Statistics.GetStatistics(seriesBottomRight.Points);
         }
+
         public void chartBuildRandomAndAutoCorrelation()
         {
             pointsClear();
@@ -223,6 +243,7 @@ namespace PlotBuilder.Sources
             Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesBottomLeft.Points, seriesBottomLeft.Points);
             messageBottomRight = "Auto Correlation";
         }
+
         public void chartBuildRandomAndCrossCorrelation()
         {
             pointsClear();
@@ -251,25 +272,6 @@ namespace PlotBuilder.Sources
             seriesBottomRight.BorderDashStyle = ChartDashStyle.DashDot;
             Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesBottomLeft.Points, seriesTopLeft.Points);
             messageBottomRight = "Auto Correlation";
-        }
-
-        //EDITED!!
-        public void chartMaximazed(bool maximazed = true)
-        {
-            if (maximazed)
-            {
-                foreach (var series in chart.Series)
-                {
-                    series.BorderWidth = 1;
-                }
-            }
-            else
-            {
-                foreach (var series in chart.Series)
-                {
-                    series.BorderWidth = 1;
-                }
-            }
         }
 
         public void chartBuildRandomAndGist()
@@ -302,27 +304,66 @@ namespace PlotBuilder.Sources
             messageBottomRight = "Custom gist";
         }
 
-        public void chartBuildDiscr()
+        public void chartBuildDiscretization()
         {
             pointsClear();
-            mainTitle.Text = "Discr";
+            mainTitle.Text = "Discretization";
+            chartMaximazed();
             //fill top left series 
-            titleTopLeft.Text = "Discr";
+            titleTopLeft.Text = "Aliasing";
             seriesTopLeft.ChartType = SeriesChartType.Spline;
             seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
-            Plots.Discr(seriesTopLeft.Points, seriesTopLeft.ChartArea);
-            //fill top right series - gist of top right
-            titleTopRight.Text = "Harm";
+            Plots.Discretization(seriesTopLeft.Points, seriesTopLeft.ChartArea);
+            messageTopLeft = "";
+            //fill top right series
+            titleTopRight.Text = "Harmonic";
             seriesTopRight.ChartType = SeriesChartType.Spline;
             seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
-            Plots.Discr(seriesTopRight.Points, seriesTopRight.ChartArea);
-            //fill bottom left series - gist of bottom left
-            titleBottomLeft.Text = "Harm + Spike + Shift";
+            Plots.Discretization(seriesTopRight.Points, seriesTopRight.ChartArea);
+            messageTopRight = "";
+            //fill bottom left series
+            titleBottomLeft.Text = "Harmonic + Spike + Shift";
             seriesBottomLeft.ChartType = SeriesChartType.Spline;
             seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
-            Plots.Discr(seriesBottomLeft.Points, seriesBottomLeft.ChartArea);
+            Plots.Discretization(seriesBottomLeft.Points, seriesBottomLeft.ChartArea);
             Plots.Spike(seriesBottomLeft.Points,0.05,500);
             Plots.Shift(seriesBottomLeft.Points,1000);
+            messageBottomLeft = "";
+            //fill bottom right series
+            titleBottomRight.Text = "Empty";
+            seriesBottomRight.ChartType = SeriesChartType.Spline;
+            seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            messageBottomRight = "";
+        }
+        public void chartBuildDPF()
+        {
+            pointsClear();
+            mainTitle.Text = "Fourier";
+            chartMaximazed();
+            //fill top left series 
+            titleTopLeft.Text = "Graphic";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.PrepareDPF(seriesTopLeft.Points);
+            messageTopLeft = "";
+            //fill top right series
+            titleTopRight.Text = "Frequency";
+            seriesTopRight.ChartType = SeriesChartType.Spline;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.DPF(seriesTopRight.Points, seriesTopRight.ChartArea);
+            messageTopRight = "";
+            //fill bottom left series
+            titleBottomLeft.Text = "Real";
+            seriesBottomLeft.ChartType = SeriesChartType.Spline;
+            seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.DPF(seriesBottomLeft.Points, seriesBottomLeft.ChartArea);
+            messageBottomLeft = "";
+            //fill bottom right series
+            titleBottomRight.Text = "Image";
+            seriesBottomRight.ChartType = SeriesChartType.Spline;
+            seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.DPF(seriesBottomRight.Points, seriesBottomRight.ChartArea);
+            messageBottomRight = "";
         }
     }
 }

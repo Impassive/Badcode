@@ -119,7 +119,12 @@ namespace PlotBuilder
 
         private void discrToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            chart.chartBuildDiscr();
+            chart.chartBuildDiscretization();
+        }
+
+        private void fourierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.chartBuildDPF();
         }
     }
 }

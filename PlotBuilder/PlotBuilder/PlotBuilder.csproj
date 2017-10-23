@@ -55,6 +55,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sources\CustomRandom.cs" />
+    <Compile Include="Sources\Fourier.cs" />
     <Compile Include="Sources\ManageChart.cs" />
     <Compile Include="Sources\Plots.cs" />
     <Compile Include="Sources\Statistics.cs" />

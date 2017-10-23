@@ -18,7 +18,7 @@ namespace PlotBuilder.Sources
         static Plots()
         {
             minX = 0;
-            maxX = 1000;
+            maxX = 500;
             minY = 0;
             maxY = 10;
         }
@@ -130,7 +130,7 @@ namespace PlotBuilder.Sources
             }
         }
 
-        internal static void Discr(DataPointCollection points, string location, double a = 1, double d = 0.001)
+        internal static void Discretization(DataPointCollection points, string location, double a = 1, double d = 0.001)
         {
             switch (location)
             {
@@ -158,7 +158,7 @@ namespace PlotBuilder.Sources
             }
         }
 
-        //отпрвленной точке увеличиваем значение на сигму
+        //случайной точке увеличиваем значение на сигму
         internal static void Spike(DataPointCollection points, double chance = 0.5, double sigma = 10000)
         {
             Random r = new Random(400);
@@ -175,6 +175,82 @@ namespace PlotBuilder.Sources
             foreach (var point in points)
             {
                 point.YValues[0] += c;
+            }
+        }
+
+        public class Complex
+        {
+            public double Re = 0;
+            public double Im = 0;
+            public double C = 0;
+        }
+
+        public static Complex[] FourierArr;
+        public static double SignalFunc(double A, double f, double delta, int step)
+        {
+            return A * Math.Sin(2 * Math.PI * f * delta * step);
+        }
+        public static void PrepareDPF(DataPointCollection points) 
+        {
+            //Generate function
+            double delta = 0.002;
+            points.Clear();
+            for (int i = minX; i < maxX; i++)
+            {
+                points.AddXY(i, SignalFunc(20, 5, delta, i) + SignalFunc(100, 57, delta, i) + SignalFunc(35, 190, delta, i));
+            }
+            //Calculating
+            FourierArr = new Complex[points.Count];
+            CalculateDPF(FourierArr, points);
+        }
+        public static void DPF(DataPointCollection points, string location)
+        {
+            switch (location)
+            {
+                case "ChartAreaTopLeft":
+                    break;
+                case "ChartAreaTopRight":
+                    points.Clear();
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, FourierArr[i].C);
+                    }
+                    break;
+                case "ChartAreaBottomLeft":
+                    points.Clear();
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, FourierArr[i].Re);
+                    }
+                    break;
+                case "ChartAreaBottomRight":
+                    points.Clear();
+                    for (int i = minX; i < maxX - 5; i++)
+                    {
+                        points.AddXY(i, FourierArr[i].Im);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        private static void CalculateDPF(Complex[] FourierArr, DataPointCollection points)
+        {
+            int N = points.Count;
+            double arg = 0;
+
+            for (int i = minX; i < maxX; i++)
+            {
+                FourierArr[i] = new Complex();
+                int j = 0;
+                foreach (var point in points)
+                {
+                    arg = 2 * Math.PI * i * j / N;
+                    FourierArr[i].Re += point.YValues[0] * Math.Cos(arg);
+                    FourierArr[i].Im += point.YValues[0] * Math.Sin(arg);
+                    j++;
+                }
+                FourierArr[i].C = Math.Sqrt(Math.Pow(FourierArr[i].Re, 2 + Math.Pow(FourierArr[i].Im, 2)));
             }
         }
     }
