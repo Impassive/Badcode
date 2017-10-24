@@ -156,31 +156,22 @@ namespace PlotBuilder.Sources
                 }
             }
         }
-
+        public void Update()
+        {
+            foreach (var series in chart.Series)
+                series.BorderWidth = Plots.border;
+            chart.Update();
+        }
         private void pointsClear()
         {
             foreach (var series in chart.Series)
             {
                 series.Points.Clear();
             }
-        }
-
-        //EDITED!!
-        public void chartMaximazed(bool maximazed = true)
-        {
-            if (maximazed && !mainTitle.Text.Contains("Discr"))
+            foreach (var area in chart.ChartAreas)
             {
-                foreach (var series in chart.Series)
-                {
-                    series.BorderWidth = 2;
-                }
-            }
-            else
-            {
-                foreach (var series in chart.Series)
-                {
-                    series.BorderWidth = 1;
-                }
+                area.AxisX.Maximum = Plots.maxX;
+                area.AxisX.Minimum = Plots.minX;
             }
         }
 
@@ -308,7 +299,6 @@ namespace PlotBuilder.Sources
         {
             pointsClear();
             mainTitle.Text = "Discretization";
-            chartMaximazed();
             //fill top left series 
             titleTopLeft.Text = "Aliasing";
             seriesTopLeft.ChartType = SeriesChartType.Spline;
@@ -326,8 +316,8 @@ namespace PlotBuilder.Sources
             seriesBottomLeft.ChartType = SeriesChartType.Spline;
             seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
             Plots.Discretization(seriesBottomLeft.Points, seriesBottomLeft.ChartArea);
-            Plots.Spike(seriesBottomLeft.Points,0.05,500);
-            Plots.Shift(seriesBottomLeft.Points,1000);
+            Plots.Spike(seriesBottomLeft.Points, 0.05, 500);
+            Plots.Shift(seriesBottomLeft.Points, 1000);
             messageBottomLeft = "";
             //fill bottom right series
             titleBottomRight.Text = "Empty";
@@ -339,7 +329,11 @@ namespace PlotBuilder.Sources
         {
             pointsClear();
             mainTitle.Text = "Fourier";
-            chartMaximazed();
+            foreach (var area in chart.ChartAreas)
+            {
+                area.AxisX.Maximum = Plots.CalculateBorder(0.002);
+                area.AxisX.Minimum = 0;
+            }
             //fill top left series 
             titleTopLeft.Text = "Graphic";
             seriesTopLeft.ChartType = SeriesChartType.Spline;
@@ -363,6 +357,45 @@ namespace PlotBuilder.Sources
             seriesBottomRight.ChartType = SeriesChartType.Spline;
             seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
             Plots.DPF(seriesBottomRight.Points, seriesBottomRight.ChartArea);
+            messageBottomRight = "";
+        }
+        public void chartBuildImpulseReact()
+        {
+            Plots.minX = 0;
+            int M = 200;
+            int N = 1000;
+            //h(t)=A0*sin(2pif0*t)*e^(-at)
+            pointsClear();
+            mainTitle.Text = "Impulse Reaction";
+            //fill top left series 
+            titleTopLeft.Text = "Hearth beat";
+            Plots.maxX = M;
+            chart.ChartAreas[seriesTopLeft.ChartArea].AxisX.Maximum = Plots.maxX;
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.Impulse(seriesTopLeft.Points, seriesTopLeft.ChartArea);
+            messageTopLeft = "";
+            //fill bottom left series
+            titleBottomLeft.Text = "Impulse";
+            Plots.maxX = N;
+            chart.ChartAreas[seriesBottomLeft.ChartArea].AxisX.Maximum = Plots.maxX;
+            seriesBottomLeft.ChartType = SeriesChartType.Spline;
+            seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.Impulse(seriesBottomLeft.Points, seriesBottomLeft.ChartArea);
+            messageBottomLeft = "";
+            //fill top right series
+            titleTopRight.Text = "Reaction";
+            Plots.maxX = M+N-1;
+            chart.ChartAreas[seriesTopRight.ChartArea].AxisX.Maximum = Plots.maxX;
+            seriesTopRight.ChartType = SeriesChartType.Spline;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.Impulse(seriesTopRight.Points, seriesTopRight.ChartArea);
+            messageTopRight = "";
+            //fill bottom right series
+            titleBottomRight.Text = "";
+            seriesBottomRight.ChartType = SeriesChartType.Spline;
+            seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            //Plots.DPF(seriesBottomRight.Points, seriesBottomRight.ChartArea);
             messageBottomRight = "";
         }
     }

@@ -13,10 +13,15 @@ namespace PlotBuilder.Sources
         internal static int maxX { get; set; }
         internal static int minY { get; set; }
         internal static int maxY { get; set; }
-        internal static int a { get; set; }
-        internal static int b { get; set; }
+        //internal static int a { get; set; }
+        //internal static int b { get; set; }
+        internal static int border { get; set; }
+        internal static double delta { get; set; }
+        internal static double[] imp;
+        internal static double[] temp;
         static Plots()
         {
+            border = 1;
             minX = 0;
             maxX = 500;
             minY = 0;
@@ -186,22 +191,27 @@ namespace PlotBuilder.Sources
         }
 
         public static Complex[] FourierArr;
-        public static double SignalFunc(double A, double f, double delta, int step)
+        public static double SignalFunc(double A, double f, int step)
         {
             return A * Math.Sin(2 * Math.PI * f * delta * step);
         }
-        public static void PrepareDPF(DataPointCollection points) 
+        public static void PrepareDPF(DataPointCollection points)
         {
-            //Generate function
-            double delta = 0.002;
+            //Generate function 
+
             points.Clear();
             for (int i = minX; i < maxX; i++)
             {
-                points.AddXY(i, SignalFunc(20, 5, delta, i) + SignalFunc(100, 57, delta, i) + SignalFunc(35, 190, delta, i));
+                points.AddXY(i, SignalFunc(20, 5, i) + SignalFunc(100, 57, i) + SignalFunc(35, 190, i));
             }
             //Calculating
             FourierArr = new Complex[points.Count];
             CalculateDPF(FourierArr, points);
+        }
+        public static double CalculateBorder(double Delta)
+        {
+            delta = Delta;
+            return 1 / (2 * delta);
         }
         public static void DPF(DataPointCollection points, string location)
         {
@@ -250,10 +260,69 @@ namespace PlotBuilder.Sources
                     FourierArr[i].Im += point.YValues[0] * Math.Sin(arg);
                     j++;
                 }
-                FourierArr[i].C = Math.Sqrt(Math.Pow(FourierArr[i].Re, 2 + Math.Pow(FourierArr[i].Im, 2)));
+                FourierArr[i].C = Math.Sqrt(Math.Pow(FourierArr[i].Re, 2) + Math.Pow(FourierArr[i].Im, 2));
             }
         }
+        internal static void Impulse(DataPointCollection points, string location, double d = 0.005, double alpha = 45, int _m = 200)
+        {
+            //build charts:
+            switch (location)
+            {
+                case "ChartAreaTopLeft":
+                    points.Clear();
+                    _m = maxX;
+                    temp = new double[_m];
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        temp[i] = 2 * Math.Sin(2 * Math.PI * 14 * i * d) * Math.Pow(Math.E, -alpha * d * i);
+                        points.AddXY(i, temp[i]);
+                    }
+                    break;
+                case "ChartAreaTopRight":
+                    points.Clear();
+                    for (int k = minX; k < maxX; k++)
+                    {
+                        double y = 0;
+                        for (int l = minX; l < _m; l++)
+                        {
+                            if (k >= l && (k - l) < imp.Length)
+                                y += imp[k - l] * temp[l];
+                        }
+                        points.AddXY(k, y);
+                    }
+                    break;
+                case "ChartAreaBottomLeft":
+                    points.Clear();
+                    imp = new double[maxX];
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        if (i % 200 == 0 && i > 1)
+                        {
+                            points.AddXY(i, 1);
+                            imp[i] = 120;
+                        }
+                        else
+                        {
+                            points.AddXY(i, 0);
+                            imp[i] = 0;
+                        }
+                    }
+                    break;
+                case "ChartAreaBottomRight":
+                    points.Clear();
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private static void ImpulseReaction(int m)
+        {
+
+        }
     }
+
 }
 
 

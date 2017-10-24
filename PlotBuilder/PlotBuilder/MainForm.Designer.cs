@@ -41,8 +41,9 @@
             this.crossToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.discrToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.chartBox = new System.Windows.Forms.GroupBox();
             this.fourierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chartBox = new System.Windows.Forms.GroupBox();
+            this.impulseReactToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,7 +57,8 @@
             this.trendsToolStripMenuItem,
             this.randomToolStripMenuItem,
             this.discrToolStripMenuItem,
-            this.fourierToolStripMenuItem});
+            this.fourierToolStripMenuItem,
+            this.impulseReactToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(983, 28);
@@ -157,6 +159,13 @@
             this.discrToolStripMenuItem.Text = "Discr";
             this.discrToolStripMenuItem.Click += new System.EventHandler(this.discrToolStripMenuItem_Click);
             // 
+            // fourierToolStripMenuItem
+            // 
+            this.fourierToolStripMenuItem.Name = "fourierToolStripMenuItem";
+            this.fourierToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
+            this.fourierToolStripMenuItem.Text = "Fourier";
+            this.fourierToolStripMenuItem.Click += new System.EventHandler(this.fourierToolStripMenuItem_Click);
+            // 
             // chartBox
             // 
             this.chartBox.AutoSize = true;
@@ -168,12 +177,12 @@
             this.chartBox.TabIndex = 2;
             this.chartBox.TabStop = false;
             // 
-            // fourierToolStripMenuItem
+            // impulseReactToolStripMenuItem
             // 
-            this.fourierToolStripMenuItem.Name = "fourierToolStripMenuItem";
-            this.fourierToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
-            this.fourierToolStripMenuItem.Text = "Fourier";
-            this.fourierToolStripMenuItem.Click += new System.EventHandler(this.fourierToolStripMenuItem_Click);
+            this.impulseReactToolStripMenuItem.Name = "impulseReactToolStripMenuItem";
+            this.impulseReactToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
+            this.impulseReactToolStripMenuItem.Text = "Impulse React";
+            this.impulseReactToolStripMenuItem.Click += new System.EventHandler(this.impulseReactToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -186,7 +195,6 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "PlotBuilder";
-            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -211,6 +219,7 @@
         private System.Windows.Forms.ToolStripMenuItem gistToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem discrToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fourierToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem impulseReactToolStripMenuItem;
     }
 }
 

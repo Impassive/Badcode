@@ -100,18 +100,6 @@ namespace PlotBuilder
             this.Focus();
         }
 
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            try
-            {
-                if (WindowState == FormWindowState.Maximized)
-                    chart.chartMaximazed(true);
-                else
-                    chart.chartMaximazed(false);
-            }
-            catch { }
-        }
-
         private void gistToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chart.chartBuildRandomAndGist();
@@ -125,6 +113,11 @@ namespace PlotBuilder
         private void fourierToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chart.chartBuildDPF();
+        }
+
+        private void impulseReactToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.chartBuildImpulseReact();
         }
     }
 }
