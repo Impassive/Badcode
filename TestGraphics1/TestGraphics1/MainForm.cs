@@ -160,8 +160,8 @@ namespace TestGraphics
             analytics_label_right.Text += "|  Эксцесс: " + Math.Round(Analysis.Calculate_kurtosis(series.Points), 2) + "\n\t";
             if (stat)
             {
-                analytics_label_right.Text += "|  Стационарность (СЗ): " + Analysis.Calculate_stationarity_mean(series.Points) + "\n\t";
-                analytics_label_right.Text += "|  Стационарность (D): " + Analysis.Calculate_stationarity_dispersion(series.Points) + "\n\t";
+                analytics_label_right.Text += "|  Стационарность (СЗ): " + Math.Round(Analysis.Calculate_stationarity_mean(series.Points),2) + "%\n\t";
+                analytics_label_right.Text += "|  Стационарность (D): " + Math.Round(Analysis.Calculate_stationarity_dispersion(series.Points),2) + "%\n\t";
             }
         }
 
@@ -376,7 +376,7 @@ namespace TestGraphics
             temp_series.ChartArea = "functions";
             chart.Series.Add(temp_series);
             Chart_plots.chart_graph_random(DateTime.Now.Millisecond, true);
-            for (int i = 1; i < right_X - 1; i++)
+            for (int i = 0; i < right_X; i++)
             {
                 temp_series.Points.AddXY(i, Analysis.Calculate_cross_correlation(series.Points, series.Points, i));
             }
@@ -398,7 +398,7 @@ namespace TestGraphics
             cor_series.ChartArea = "functions";
             chart.Series.Add(cor_series);
             Chart_plots.chart_graph_random(DateTime.Now.Millisecond, false);
-            for (int i = 1; i < right_X - 1; i++)
+            for (int i = 0; i < right_X; i++)
             {
                 cor_series.Points.AddXY(i, Analysis.Calculate_cross_correlation(series.Points, series.Points, i));
             }
@@ -423,7 +423,7 @@ namespace TestGraphics
             temp_series.ChartArea = "functions";
             chart.Series.Add(temp_series);
             Chart_plots.chart_dual(DateTime.Now.Millisecond);
-            for (int i = 1; i < right_X - 1; i++)
+            for (int i = 0; i < right_X; i++)
             {
                 cor_series.Points.AddXY(i, Analysis.Calculate_cross_correlation(temp_series.Points, series.Points, i));
             }
@@ -433,6 +433,17 @@ namespace TestGraphics
             chart.Series.Remove(temp_series);
             title.Text = "Custom-lib auto-correlation";
             chart.Update();
+        }
+
+        private void customToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (chart.Series.Count > 0)
+            {
+                chart_clear();
+            }
+            Chart_plots.chart_graph_3(1, 1);
+            chart.Update();
+            update_analysis();
         }
     }
 }

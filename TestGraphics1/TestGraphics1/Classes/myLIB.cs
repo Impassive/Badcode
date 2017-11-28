@@ -11,17 +11,29 @@ namespace TestGraphics
     public class Custom_random
     {
         private double next = 0;
-        public Custom_random(int seed = 55)
-        {
-            next = (seed * 10 % (Math.PI * Math.E)) + 55000;
-        }
+        //public Custom_random(int seed = 55)
+        //{
+        //    next = (seed * 10 % (Math.PI * Math.E)) + 55000;
+        //}
 
+        //public double Next()
+        //{
+
+        //    next = Math.Sin(next) * Math.Pow(Math.PI, 7);
+
+        //    return (Math.Abs((next % 100)) / 100);
+        //}
+
+        public Custom_random(int seed=55)
+        {
+            next = Math.Abs(seed);
+        }
         public double Next()
         {
 
-            next = Math.Sin(next) * Math.Pow(Math.PI, 7);
+            next = next * 148878.553 % 1000000;
 
-            return (Math.Abs((next % 100)) / 100);
+            return ((next%100)/100);
         }
     }
 
@@ -107,19 +119,19 @@ namespace TestGraphics
             double avg_1 = Calculate_avg(data1);
             double avg_2 = Calculate_avg(data2);
             double sum = 0;
-            for (int i = 0; i < data1.Count - lag && i < data2.Count - lag; i++)
+            for (int i = 0; i < (data1.Count - lag); i++)
             {
                 sum += (data1[i].YValues[0] - avg_1) * (data2[i + lag].YValues[0] - avg_2);
             }
-            return sum / data1.Count;
+            return sum / ((data1.Count - lag) * (Calculate_standard_deviation(data1) * Calculate_standard_deviation(data1)));
         }
 
         //увеличить N, разбить на 10 кусков, взять среднее или дисперсию с кусков, потом вычислить разницу
-        public static string Calculate_stationarity_mean(DataPointCollection data)
+        public static double Calculate_stationarity_mean(DataPointCollection data)
         {
             Series s = new Series();
             int block = (int)(data.Count / MainForm.stat_delimiter);
-            string sum = "";
+            double[] sum = new double[MainForm.stat_delimiter];
             for (int i = 0; i < MainForm.stat_delimiter; i++)
             {
                 s.Points.Clear();
@@ -127,15 +139,18 @@ namespace TestGraphics
                 {
                     s.Points.AddXY(data[j].XValue, data[j].YValues[0]);
                 }
-                sum += Math.Round(Calculate_avg(s.Points), 2) + "  ";
+                sum[i] = Calculate_avg(s.Points);
             }
-            return sum;
+            double min = sum.Min();
+            double avg = sum.Average();
+            double max = sum.Max();
+            return (max - avg) * 100 / max;
         }
-        public static string Calculate_stationarity_dispersion(DataPointCollection data)
+        public static double Calculate_stationarity_dispersion(DataPointCollection data)
         {
             Series s = new Series();
             int block = (int)(data.Count / MainForm.stat_delimiter);
-            string sum = "";
+            double[] sum = new double[MainForm.stat_delimiter];
             for (int i = 0; i < MainForm.stat_delimiter; i++)
             {
                 s.Points.Clear();
@@ -143,9 +158,12 @@ namespace TestGraphics
                 {
                     s.Points.AddXY(data[j].XValue, data[j].YValues[0]);
                 }
-                sum += Math.Round(Calculate_dispersion(s.Points, 2), 2) + "  ";
+                sum[i] = Math.Round(Calculate_dispersion(s.Points, 2), 2);
             }
-            return sum;
+            double min = sum.Min();
+            double avg = sum.Average();
+            double max = sum.Max();
+            return (max - avg) * 100 / max;
         }
     }
 }

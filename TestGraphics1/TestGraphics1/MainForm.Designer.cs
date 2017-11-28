@@ -37,6 +37,7 @@
             this.TestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yaxbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ybeaxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.customToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.func6ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.randomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customRandomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -127,7 +128,8 @@
             this.TestToolStripMenuItem.CheckOnClick = true;
             this.TestToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.yaxbToolStripMenuItem,
-            this.ybeaxToolStripMenuItem});
+            this.ybeaxToolStripMenuItem,
+            this.customToolStripMenuItem1});
             this.TestToolStripMenuItem.Name = "TestToolStripMenuItem";
             this.TestToolStripMenuItem.Size = new System.Drawing.Size(47, 24);
             this.TestToolStripMenuItem.Text = "Test";
@@ -145,6 +147,13 @@
             this.ybeaxToolStripMenuItem.Size = new System.Drawing.Size(159, 26);
             this.ybeaxToolStripMenuItem.Text = "y=be^(-ax)";
             this.ybeaxToolStripMenuItem.Click += new System.EventHandler(this.ybeaxToolStripMenuItem_Click);
+            // 
+            // customToolStripMenuItem1
+            // 
+            this.customToolStripMenuItem1.Name = "customToolStripMenuItem1";
+            this.customToolStripMenuItem1.Size = new System.Drawing.Size(159, 26);
+            this.customToolStripMenuItem1.Text = "custom";
+            this.customToolStripMenuItem1.Click += new System.EventHandler(this.customToolStripMenuItem1_Click);
             // 
             // func6ToolStripMenuItem
             // 
@@ -196,7 +205,7 @@
             this.customToolStripMenuItem,
             this.libToolStripMenuItem});
             this.autoToolStripMenuItem.Name = "autoToolStripMenuItem";
-            this.autoToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.autoToolStripMenuItem.Size = new System.Drawing.Size(119, 26);
             this.autoToolStripMenuItem.Text = "Auto";
             // 
             // customToolStripMenuItem
@@ -216,7 +225,7 @@
             // crossToolStripMenuItem
             // 
             this.crossToolStripMenuItem.Name = "crossToolStripMenuItem";
-            this.crossToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.crossToolStripMenuItem.Size = new System.Drawing.Size(119, 26);
             this.crossToolStripMenuItem.Text = "Cross";
             this.crossToolStripMenuItem.Click += new System.EventHandler(this.crossToolStripMenuItem_Click);
             // 
@@ -373,6 +382,7 @@
         private System.Windows.Forms.ToolStripMenuItem customToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem libToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem crossToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem customToolStripMenuItem1;
     }
 }
 
