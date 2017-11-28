@@ -119,5 +119,20 @@ namespace PlotBuilder
         {
             chart.chartBuildImpulseReact();
         }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.chartBuildAntiTrend();
+        }
+
+        private void testToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            chart.chartBuildFilterLDF_Test();
+        }
+
+        private void lDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.chartBuildFilter();
+        }
     }
 }

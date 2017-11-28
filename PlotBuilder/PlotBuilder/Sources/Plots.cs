@@ -171,7 +171,14 @@ namespace PlotBuilder.Sources
             {
                 if (r.NextDouble() < chance)
                 {
-                    point.YValues[0] += sigma;
+                    if ((r.NextDouble() * 2 - 1) > 0)
+                    {
+                        point.YValues[0] += sigma;
+                    }
+                    else
+                    {
+                        point.YValues[0] -= sigma;
+                    }
                 }
             }
         }
@@ -191,19 +198,28 @@ namespace PlotBuilder.Sources
         }
 
         public static Complex[] FourierArr;
-        public static double SignalFunc(double A, double f, int step)
+        public static double SignalFunc(double A, double f, int step, double delta = 0.001)
         {
             return A * Math.Sin(2 * Math.PI * f * delta * step);
         }
         public static void PrepareDPF(DataPointCollection points)
         {
             //Generate function 
-
             points.Clear();
+            //Random r = new Random(51);
+            //CustomRandom r = new CustomRandom(111);
             for (int i = minX; i < maxX; i++)
             {
+                //3 гармоники
                 points.AddXY(i, SignalFunc(20, 5, i) + SignalFunc(100, 57, i) + SignalFunc(35, 190, i));
+                //линейная ф-ия
+                //points.AddXY(i, i);
+                //Рандом
+                //points.AddXY(i, r.Next()*2-1);
+                //Спайки
+                //points.AddXY(i, 0);
             }
+            //Shift(points, 100 );//points.Select(y => y.YValues[0]).Max());
             //Calculating
             FourierArr = new Complex[points.Count];
             CalculateDPF(FourierArr, points);
@@ -249,7 +265,7 @@ namespace PlotBuilder.Sources
             int N = points.Count;
             double arg = 0;
 
-            for (int i = minX; i < maxX; i++)
+            for (int i = minX; i < points.Count; i++)
             {
                 FourierArr[i] = new Complex();
                 int j = 0;
@@ -260,6 +276,8 @@ namespace PlotBuilder.Sources
                     FourierArr[i].Im += point.YValues[0] * Math.Sin(arg);
                     j++;
                 }
+                FourierArr[i].Re = FourierArr[i].Re / maxX;
+                FourierArr[i].Im = FourierArr[i].Im / maxX;
                 FourierArr[i].C = Math.Sqrt(Math.Pow(FourierArr[i].Re, 2) + Math.Pow(FourierArr[i].Im, 2));
             }
         }
@@ -317,12 +335,136 @@ namespace PlotBuilder.Sources
             }
         }
 
-        private static void ImpulseReaction(int m)
+        public static void AntiShift(DataPointCollection points)
         {
+            double c = Statistics.CalcAVG(points);
+            foreach (var point in points)
+            {
+                point.YValues[0] -= c;
+            }
+        }
 
+        public static void AntiSpike(DataPointCollection points)
+        {
+            double disp = Statistics.CalcRMS(points);
+            foreach (var point in points)
+            {
+                if (point.YValues[0] > disp)
+                { }
+                //дописать = (текущее значение = пред - след) /2
+                //point.YValues[0]=;
+            }
+        }
+        public static void Test(DataPointCollection points, string location)
+        {
+            switch (location)
+            {
+                case "ChartAreaTopLeft":
+                    points.Clear();
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, 15 * Math.Sin(i));
+                    }
+                    Spike(points, 0.025, 20);
+                    break;
+                case "ChartAreaTopRight":
+                    points.Clear();
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, 15 * Math.Sin(i));
+                    }
+                    Spike(points, 0.03);
+                    break;
+                case "ChartAreaBottomLeft":
+                    points.Clear();
+                    for (int i = minX; i < maxX; i++)
+                    {
+                        points.AddXY(i, 15 * Math.Sin(i));
+                    }
+                    AntiShift(points);
+                    break;
+                case "ChartAreaBottomRight":
+                    points.Clear();
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public static void PrepareDPF_Filter(DataPointCollection points)
+        {
+            FourierArr = new Complex[points.Count];
+            CalculateDPF(FourierArr, points);
+        }
+        public static List<double> LDF_Filter(double fcut, int m, double dt)
+        {
+            List<double> lpw = new List<double>();
+            //прямоугольник
+            double[] d = { 0.35577019, 0.2436983, 0.07211497, 0.00630165 };
+            double arg = 2 * fcut * dt;
+            lpw.Add(arg);
+            arg *= Math.PI;
+
+            for (int i = 1; i <= m; i++)
+            {
+                lpw.Add(Math.Sin(arg * i) / (Math.PI * i));
+            }
+            //трапеция
+            lpw[m] /= 2;
+
+            //окно P310 (Поттера)
+            double sumg = lpw[0];
+            double sum = 0;
+            for (int i = 1; i <= m; i++)
+            {
+                sum = d[0];
+                arg = Math.PI * i / m;
+                for (int k = 1; k <= 3; k++)
+                    sum += 2 * d[k] * Math.Cos(arg * k);
+                lpw[i] *= sum;
+                sumg += 2 * lpw[i];
+            }
+            //нормировка
+            for (int i = 0; i <= m; i++)
+                lpw[i] /= sumg;
+            //зеркально отразить график, сдвинуть, чтобы был от 0 до 2m+1 (сейчас он от 0 до m+1)
+            List<double> total_lpw = new List<double>();
+            lpw.Reverse();
+            total_lpw.AddRange(lpw);
+            total_lpw.RemoveAt(total_lpw.Count - 1);
+            lpw.Reverse();
+            total_lpw.AddRange(lpw);
+            return total_lpw;
+        }
+        public static List<double> HPF_Filter(double fcut, int m, double dt)
+        {
+            List<double> lpw = LDF_Filter(fcut, m, dt);
+            for (int i = 0; i < lpw.Count; i++)
+            {
+                lpw[i] *= -1;
+            }
+            lpw[m] += 1;
+            return lpw;
+        }
+        public static List<double> BPF_Filter(double fcut1, double fcut2, int m, double dt)
+        {
+            List<double> lpw1 = LDF_Filter(fcut1, m, dt);
+            List<double> lpw2 = LDF_Filter(fcut2, m, dt);
+            for (int i=0;i<lpw1.Count;i++)
+            { lpw1[i] = lpw2[i] - lpw1[i]; }
+            return lpw1;
+        }
+        public static List<double> BSF_Filter(double fcut1, double fcut2, int m, double dt)
+        {
+            List<double> lpw1 = LDF_Filter(fcut1, m, dt);
+            List<double> lpw2 = LDF_Filter(fcut2, m, dt);
+            for (int i = 0; i < lpw1.Count; i++)
+            { lpw1[i] = lpw1[i] - lpw2[i]; }
+            lpw1[m] += 1;
+            return lpw1;
         }
     }
-
 }
 
 

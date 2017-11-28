@@ -385,7 +385,7 @@ namespace PlotBuilder.Sources
             messageBottomLeft = "";
             //fill top right series
             titleTopRight.Text = "Reaction";
-            Plots.maxX = M+N-1;
+            Plots.maxX = M + N - 1;
             chart.ChartAreas[seriesTopRight.ChartArea].AxisX.Maximum = Plots.maxX;
             seriesTopRight.ChartType = SeriesChartType.Spline;
             seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
@@ -397,6 +397,303 @@ namespace PlotBuilder.Sources
             seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
             //Plots.DPF(seriesBottomRight.Points, seriesBottomRight.ChartArea);
             messageBottomRight = "";
+        }
+
+        //ANTISHIFT & ANTISPIKE
+        //public void chartBuildTest()
+        //{
+        //pointsClear();
+        //mainTitle.Text = "Test";
+        //foreach (var area in chart.ChartAreas)
+        //{
+        //    area.AxisX.Maximum = Plots.maxX;
+        //    area.AxisX.Minimum = 0;
+        //}
+        ////fill top left series 
+        //titleTopLeft.Text = "Sin + Shift 100";
+        //seriesTopLeft.ChartType = SeriesChartType.Spline;
+        //seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+        //Plots.Test(seriesTopLeft.Points, seriesTopLeft.ChartArea);
+        //messageTopLeft = "";
+        ////fill top right series
+        //titleTopRight.Text = "Sin + Spike";
+        //seriesTopRight.ChartType = SeriesChartType.Spline;
+        //seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+        //Plots.Test(seriesTopRight.Points, seriesTopRight.ChartArea);
+        //messageTopRight = "";
+        ////fill bottom left series
+        //titleBottomLeft.Text = "AntiShift";
+        //seriesBottomLeft.ChartType = SeriesChartType.Spline;
+        //seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+        //Plots.Test(seriesBottomLeft.Points, seriesBottomLeft.ChartArea);
+        //messageBottomLeft = "";
+        ////fill bottom right series
+        ////titleBottomRight.Text = "Image";
+        ////seriesBottomRight.ChartType = SeriesChartType.Spline;
+        ////seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+        ////Plots.DPF(seriesBottomRight.Points, seriesBottomRight.ChartArea);
+        ////messageBottomRight = "";
+        //}
+
+        //ANTIRANDOM
+        //public void chartBuildTest()
+        //{
+        //    pointsClear();
+        //    Random r = new Random(51);
+        //    int M = 2000;
+        //    int f = 7;
+        //    int A = 100;
+        //    mainTitle.Text = "AntiRandom";
+        //    foreach (var area in chart.ChartAreas)
+        //    {
+        //        area.AxisX.Maximum = Plots.maxX;
+        //        area.AxisX.Minimum = 0;
+        //    }
+        //    //fill top left series 
+        //    titleTopLeft.Text = "Signal";
+        //    seriesTopLeft.ChartType = SeriesChartType.Spline;
+        //    seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+        //    for (int i = 0; i < Plots.maxX; i++)
+        //    {
+        //        seriesTopLeft.Points.AddXY(i, Plots.SignalFunc(A, f, i));
+        //    }
+        //    messageTopLeft = "";
+        //    //fill top right series
+        //    titleTopRight.Text = "Signal-Random";
+        //    seriesTopRight.ChartType = SeriesChartType.Spline;
+        //    seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+        //    for (int i = 0; i < Plots.maxX; i++)
+        //    {
+        //        seriesTopRight.Points.AddXY(i, Plots.SignalFunc(A, f, i) + r.Next(-A*10, A*10));
+        //    }
+        //    for (int i = 0; i < M - 1; i++)
+        //    {
+        //        int j = 0;
+        //        foreach (var point in seriesTopRight.Points)
+        //        {
+        //            point.YValues[0] += (Plots.SignalFunc(A, f, j) + r.Next(-A*10, A*10));
+        //            j++;
+        //        }
+        //    }
+
+        //    foreach (var point in seriesTopRight.Points)
+        //    {
+        //        point.YValues[0] = point.YValues[0] / M;
+        //    }
+        //    messageTopRight = "";
+        //    //fill bottom left series
+        //    titleBottomLeft.Text = "Signal+Random";
+        //    seriesBottomLeft.ChartType = SeriesChartType.Spline;
+        //    seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+        //    for (int i = 0; i < Plots.maxX; i++)
+        //    {
+        //        seriesBottomLeft.Points.AddXY(i, Plots.SignalFunc(100, 57, i) + r.Next(-100, 100));
+        //    }
+        //    messageBottomLeft = "";
+        //    //fill bottom right series
+        //    titleBottomRight.Text = "Random";
+        //    seriesBottomRight.ChartType = SeriesChartType.Spline;
+        //    seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+        //    for (int i = 0; i < Plots.maxX; i++)
+        //    {
+        //        seriesBottomRight.Points.AddXY(i, r.Next(-100, 100));
+        //    }
+        //    messageBottomRight = "";
+        //    messageBottomRight += "СО (σ1)" + Statistics.CalcStandardDeviation(seriesBottomRight.Points);
+
+        //}
+
+
+        //Spikes Random
+        public void chartBuildAntiTrend()
+        {
+            Random r = new Random(20);
+            int A = 100;
+            int W = 15;
+            pointsClear();
+            mainTitle.Text = "Anti Trend";
+            foreach (var area in chart.ChartAreas)
+            {
+                area.AxisX.Maximum = Plots.maxX;
+                area.AxisX.Minimum = 0;
+            }
+            //fill top left series 
+            titleTopLeft.Text = "Trend";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+            for (int i = 0; i < Plots.maxX; i++)
+            {
+                seriesTopLeft.Points.AddXY(i, 5 * i);
+            }
+            messageTopLeft = "";
+            //fill top right series
+            titleTopRight.Text = "AntiTrend";
+            seriesTopRight.ChartType = SeriesChartType.Spline;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            for (int i = 0; i < Plots.maxX; i++)
+            {
+                seriesTopRight.Points.AddXY(i, 5 * i + r.Next(-A, A));
+            }
+            double[] temp_array = seriesTopRight.Points.Select(y => y.YValues[0]).ToArray();
+            for (int i = 0; i < Plots.maxX / W; i++)
+            {
+                double Xk = 0;
+                for (int j = i * W; j < (i + 1) * W; j++)
+                {
+                    Xk += temp_array[j];
+                }
+                Xk = Xk / W;
+                for (int j = i * W; j < (i + 1) * W; j++)
+                {
+                    temp_array[j] -= Xk;
+                }
+            }
+            int k = 0;
+            foreach (var point in seriesTopRight.Points)
+            {
+                point.YValues[0] = temp_array[k];
+                k++;
+            }
+            messageTopRight = "";
+            //fill bottom left series
+            titleBottomLeft.Text = "Trend + Random";
+            seriesBottomLeft.ChartType = SeriesChartType.Spline;
+            seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+            for (int i = 0; i < Plots.maxX; i++)
+            {
+                seriesBottomLeft.Points.AddXY(i, i + r.Next(-A, A));
+            }
+            messageBottomLeft = "";
+            //fill bottom right series
+            //titleBottomRight.Text = "Image";
+            //seriesBottomRight.ChartType = SeriesChartType.Spline;
+            //seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            //Plots.DPF(seriesBottomRight.Points, seriesBottomRight.ChartArea);
+            //messageBottomRight = "";
+        }
+
+        public void chartBuildFilterLDF_Test()
+        {
+            pointsClear();
+            mainTitle.Text = "Filter";
+            double fcut = 250;
+            int m = 128;
+            double dt = 0.001;
+            List<double> lpw = new List<double>();
+            //прямоугольник
+            double[] d = { 0.35577019, 0.2436983, 0.07211497, 0.00630165 };
+            double arg = 2 * fcut * dt;
+            lpw.Add(arg);
+            arg *= Math.PI;
+
+            for (int i = 1; i <= m; i++)
+            {
+                lpw.Add(Math.Sin(arg * i) / (Math.PI * i));
+            }
+            //трапеция
+            lpw[m] /= 2;
+
+            //окно P310 (Поттера)
+            double sumg = lpw[0];
+            double sum = 0;
+            for (int i = 1; i <= m; i++)
+            {
+                sum = d[0];
+                arg = Math.PI * i / m;
+                for (int k = 1; k <= 3; k++)
+                    sum += 2 * d[k] * Math.Cos(arg * k);
+                lpw[i] *= sum;
+                sumg += 2 * lpw[i];
+            }
+            //нормировка
+            for (int i = 0; i <= m; i++)
+                lpw[i] /= sumg;
+            //зеркально отразить график, сдвинуть, чтобы был от 0 до 2m+1 (сейчас он от 0 до m+1)
+
+            //fill top left series 
+            titleTopLeft.Text = "m(" + m + ")+1";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+            foreach (var area in chart.ChartAreas)
+            {
+                area.AxisX.Maximum = lpw.Count;
+                area.AxisX.Minimum = 0;
+            }
+            for (int i = 0; i < lpw.Count; i++)
+            {
+                seriesTopLeft.Points.AddXY(i, lpw[i]);
+            }
+            messageTopLeft = "";
+            //fill bottom left series 
+            titleBottomLeft.Text = "2m(" + 2 * m + ")+1";
+            seriesBottomLeft.ChartType = SeriesChartType.Spline;
+            seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+            foreach (var area in chart.ChartAreas)
+            {
+                area.AxisX.Maximum = lpw.Count * 2 + 1;
+                area.AxisX.Minimum = 0;
+            }
+            List<double> total_lpw = new List<double>();
+            lpw.Reverse();
+            total_lpw.AddRange(lpw);
+
+            total_lpw.RemoveAt(total_lpw.Count - 1);
+            lpw.Reverse();
+            total_lpw.AddRange(lpw);
+            for (int i = 0; i < total_lpw.Count; i++)
+            {
+                seriesBottomLeft.Points.AddXY(i, total_lpw[i]);
+            }
+            messageBottomLeft = "";
+            //fill top right series
+            titleTopRight.Text = "DPF";
+            seriesTopRight.ChartType = SeriesChartType.Spline;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.minX = 0;
+            Plots.maxX = total_lpw.Count;
+            Plots.PrepareDPF_Filter(seriesBottomLeft.Points);
+            chartAreaTopRight.AxisX.Maximum = Plots.CalculateBorder(dt);
+            for (int i = 0; i < Plots.FourierArr.Length; i++)
+            {
+                seriesTopRight.Points.AddXY(2 * i * Plots.CalculateBorder(dt) / Plots.FourierArr.Length, Plots.FourierArr[i].C * (2 * m + 1));
+            }
+            messageTopRight = "";
+            //fill bottom right series
+            titleBottomRight.Text = "DPF";
+            seriesBottomRight.ChartType = SeriesChartType.Spline;
+            seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            for (int i = 0; i < Plots.FourierArr.Length; i++)
+            {
+                //seriesTopRight.Points.AddXY(i, Plots.FourierArr[i].C * (2 * m + 1));
+            }
+            messageTopRight = "";
+        }
+        static double fcut = 250;
+        static int m = 128;
+        static double dt = 0.001;
+        public void chartBuildFilter()
+        {
+            pointsClear();
+            mainTitle.Text = "Filter LPF";
+            foreach (var area in chart.ChartAreas)
+            {
+                area.AxisX.Maximum = Plots.maxX;
+                area.AxisX.Minimum = 0;
+            }
+            //fill top left series 
+            titleTopLeft.Text = "Trend";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+            for (int i = 0; i < Plots.maxX; i++)
+            {
+                seriesTopLeft.Points.AddXY(i, 5 * i);
+            }
+            messageTopLeft = "";
+
+        }
+        public void chartBuildFilterHPF()
+        {
+
         }
     }
 }

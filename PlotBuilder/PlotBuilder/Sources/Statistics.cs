@@ -36,7 +36,7 @@ namespace PlotBuilder.Sources
             return message;
         }
         //Среднее
-        private static double CalcAVG(DataPointCollection points)
+        public static double CalcAVG(DataPointCollection points)
         {
             double sum = 0;
             foreach (var point in points)
@@ -46,7 +46,7 @@ namespace PlotBuilder.Sources
             return (double)(sum / points.Count);
         }
         //Среднеквадратичное
-        private static double CalcRMS(DataPointCollection points)
+        public static double CalcRMS(DataPointCollection points)
         {
             double sum = 0;
             foreach (var point in points)
@@ -68,7 +68,7 @@ namespace PlotBuilder.Sources
             return dispersion / points.Count;
         }
         //Стандартное отклонение
-        private static double CalcStandardDeviation(DataPointCollection points)
+        public static double CalcStandardDeviation(DataPointCollection points)
         {
             return Math.Sqrt(CalcDispersion(points, 2));
         }
