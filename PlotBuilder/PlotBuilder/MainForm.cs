@@ -119,20 +119,29 @@ namespace PlotBuilder
         {
             chart.chartBuildImpulseReact();
         }
+        private void lDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.chartBuildFilter();
+        }
 
-        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        private void parseDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Parser.Do();
+        }
+
+        private void antiTrendToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chart.chartBuildAntiTrend();
         }
 
-        private void testToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void testLPFToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chart.chartBuildFilterLDF_Test();
         }
 
-        private void lDFToolStripMenuItem_Click(object sender, EventArgs e)
+        private void voiceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            chart.chartBuildFilter();
+            chart.chartBuildVoiceFilter();
         }
     }
 }

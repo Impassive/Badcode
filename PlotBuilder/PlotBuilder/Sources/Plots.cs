@@ -397,7 +397,7 @@ namespace PlotBuilder.Sources
             FourierArr = new Complex[points.Count];
             CalculateDPF(FourierArr, points);
         }
-        public static List<double> LDF_Filter(double fcut, int m, double dt)
+        public static List<double> LPF_Filter(double fcut, int m, double dt)
         {
             List<double> lpw = new List<double>();
             //прямоугольник
@@ -439,7 +439,7 @@ namespace PlotBuilder.Sources
         }
         public static List<double> HPF_Filter(double fcut, int m, double dt)
         {
-            List<double> lpw = LDF_Filter(fcut, m, dt);
+            List<double> lpw = LPF_Filter(fcut, m, dt);
             for (int i = 0; i < lpw.Count; i++)
             {
                 lpw[i] *= -1;
@@ -449,20 +449,137 @@ namespace PlotBuilder.Sources
         }
         public static List<double> BPF_Filter(double fcut1, double fcut2, int m, double dt)
         {
-            List<double> lpw1 = LDF_Filter(fcut1, m, dt);
-            List<double> lpw2 = LDF_Filter(fcut2, m, dt);
-            for (int i=0;i<lpw1.Count;i++)
+            List<double> lpw1 = LPF_Filter(fcut1, m, dt);
+            List<double> lpw2 = LPF_Filter(fcut2, m, dt);
+            for (int i = 0; i < lpw1.Count; i++)
             { lpw1[i] = lpw2[i] - lpw1[i]; }
             return lpw1;
         }
         public static List<double> BSF_Filter(double fcut1, double fcut2, int m, double dt)
         {
-            List<double> lpw1 = LDF_Filter(fcut1, m, dt);
-            List<double> lpw2 = LDF_Filter(fcut2, m, dt);
+            List<double> lpw1 = LPF_Filter(fcut1, m, dt);
+            List<double> lpw2 = LPF_Filter(fcut2, m, dt);
             for (int i = 0; i < lpw1.Count; i++)
             { lpw1[i] = lpw1[i] - lpw2[i]; }
             lpw1[m] += 1;
             return lpw1;
+        }
+        internal static void AddFilter(DataPointCollection points, string location, double fcut, int m, double dt)
+        {
+            //build charts:
+            switch (location)
+            {
+                case "ChartAreaTopLeft":
+                    points.Clear();
+                    for (int i = 0; i < maxX; i++)
+                    {
+                        points.AddXY(i, Parser.parser[i]);
+                    }
+                    break;
+                case "ChartAreaTopRight":
+                    points.Clear();
+                    List<double> lpw_lpf = LPF_Filter(fcut, m, dt);
+                    for (int k = minX; k < maxX; k++)
+                    {
+                        double y = 0;
+                        for (int l = minX; l < Parser.parser.Count; l++)
+                        {
+                            if (k >= l && (k - l) < lpw_lpf.Count)
+                                y += lpw_lpf[k - l] * Parser.parser[l];
+                        }
+                            points.AddXY(k, y);
+                    }
+                    break;
+                case "ChartAreaBottomLeft":
+                    points.Clear();
+                    List<double> lpw_hpf = HPF_Filter(fcut, m, dt);
+                    for (int k = minX + 2 * m; k < maxX; k++)
+                    {
+                        double y = 0;
+                        for (int l = minX; l < Parser.parser.Count; l++)
+                        {
+                            if (k >= l && (k - l) < lpw_hpf.Count)
+                                y += lpw_hpf[k - l] * Parser.parser[l];
+                        }
+                        points.AddXY(k, y);
+                    }
+                    break;
+                case "ChartAreaBottomRight":
+                    points.Clear();
+                    List<double> lpw_bpf = BPF_Filter(fcut, 210, m, dt);
+                    for (int k = minX; k < maxX; k++)
+                    {
+                        double y = 0;
+                        for (int l = minX; l < Parser.parser.Count; l++)
+                        {
+                            if (k >= l && (k - l) < lpw_bpf.Count)
+                                y += lpw_bpf[k - l] * Parser.parser[l];
+                        }
+                        points.AddXY(k, y);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        internal static void AddVoiceFilter(DataPointCollection points, string location, double fcut, int m, double dt)
+        {
+            //build charts:
+            switch (location)
+            {
+                case "ChartAreaTopLeft":
+                    points.Clear();
+                    for (int i = 0; i < maxX; i++)
+                    {
+                        points.AddXY(i, AudioFilter.audio[i]);
+                    }
+                    break;
+                case "ChartAreaTopRight":
+                    points.Clear();
+                    List<double> lpw_lpf = LPF_Filter(fcut, m, dt);
+                    for (int k = minX; k < maxX; k++)
+                    {
+                        double y = 0;
+                        for (int l = minX; l < AudioFilter.audio.Length; l++)
+                        {
+                            if (k >= l && (k - l) < lpw_lpf.Count)
+                                y += lpw_lpf[k - l] * AudioFilter.audio[l];
+                        }
+                        points.AddXY(k, y);
+                    }
+                    break;
+                case "ChartAreaBottomLeft":
+                    points.Clear();
+                    List<double> lpw_hpf = HPF_Filter(fcut, m, dt);
+                    for (int k = minX; k < maxX; k++)
+                    {
+                        double y = 0;
+                        for (int l = minX; l < AudioFilter.audio.Length; l++)
+                        {
+                            if (k >= l && (k - l) < lpw_hpf.Count)
+                                y += lpw_hpf[k - l] * AudioFilter.audio[l];
+                        }
+                        points.AddXY(k, y);
+                    }
+                    break;
+                case "ChartAreaBottomRight":
+                    points.Clear();
+                    List<double> lpw_bpf = BPF_Filter(fcut, 210, m, dt);
+                    for (int k = minX; k < maxX; k++)
+                    {
+                        double y = 0;
+                        for (int l = minX; l < AudioFilter.audio.Length; l++)
+                        {
+                            if (k >= l && (k - l) < lpw_bpf.Count)
+                                y += lpw_bpf[k - l] * AudioFilter.audio[l];
+                        }
+                        points.AddXY(k, y);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -54,8 +58,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sources\AudioFilter.cs" />
     <Compile Include="Sources\CustomRandom.cs" />
     <Compile Include="Sources\ManageChart.cs" />
+    <Compile Include="Sources\Parser.cs" />
     <Compile Include="Sources\Plots.cs" />
     <Compile Include="Sources\Statistics.cs" />
     <EmbeddedResource Include="MainForm.resx">

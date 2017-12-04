@@ -30,6 +30,7 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.parseDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMinXtxtBox = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMaxXtxtBox = new System.Windows.Forms.ToolStripTextBox();
@@ -43,10 +44,12 @@
             this.discrToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fourierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.impulseReactToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.chartBox = new System.Windows.Forms.GroupBox();
+            this.testingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.antiTrendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testLPFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chartBox = new System.Windows.Forms.GroupBox();
+            this.voiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,9 +65,9 @@
             this.discrToolStripMenuItem,
             this.fourierToolStripMenuItem,
             this.impulseReactToolStripMenuItem,
-            this.testToolStripMenuItem,
-            this.testToolStripMenuItem1,
-            this.lDFToolStripMenuItem});
+            this.testingToolStripMenuItem,
+            this.lDFToolStripMenuItem,
+            this.voiceToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(983, 28);
@@ -73,9 +76,18 @@
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.parseDataToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
             this.fileToolStripMenuItem.Text = "File";
+            // 
+            // parseDataToolStripMenuItem
+            // 
+            this.parseDataToolStripMenuItem.Name = "parseDataToolStripMenuItem";
+            this.parseDataToolStripMenuItem.Size = new System.Drawing.Size(154, 26);
+            this.parseDataToolStripMenuItem.Text = "parse data";
+            this.parseDataToolStripMenuItem.Click += new System.EventHandler(this.parseDataToolStripMenuItem_Click);
             // 
             // setToolStripMenuItem
             // 
@@ -179,19 +191,35 @@
             this.impulseReactToolStripMenuItem.Text = "Impulse React";
             this.impulseReactToolStripMenuItem.Click += new System.EventHandler(this.impulseReactToolStripMenuItem_Click);
             // 
-            // testToolStripMenuItem
+            // testingToolStripMenuItem
             // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(85, 24);
-            this.testToolStripMenuItem.Text = "AntiTrend";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            this.testingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.antiTrendToolStripMenuItem,
+            this.testLPFToolStripMenuItem});
+            this.testingToolStripMenuItem.Name = "testingToolStripMenuItem";
+            this.testingToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
+            this.testingToolStripMenuItem.Text = "Testing";
             // 
-            // testToolStripMenuItem1
+            // antiTrendToolStripMenuItem
             // 
-            this.testToolStripMenuItem1.Name = "testToolStripMenuItem1";
-            this.testToolStripMenuItem1.Size = new System.Drawing.Size(54, 24);
-            this.testToolStripMenuItem1.Text = "Filter";
-            this.testToolStripMenuItem1.Click += new System.EventHandler(this.testToolStripMenuItem1_Click);
+            this.antiTrendToolStripMenuItem.Name = "antiTrendToolStripMenuItem";
+            this.antiTrendToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.antiTrendToolStripMenuItem.Text = "AntiTrend";
+            this.antiTrendToolStripMenuItem.Click += new System.EventHandler(this.antiTrendToolStripMenuItem_Click);
+            // 
+            // testLPFToolStripMenuItem
+            // 
+            this.testLPFToolStripMenuItem.Name = "testLPFToolStripMenuItem";
+            this.testLPFToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.testLPFToolStripMenuItem.Text = "testLPF";
+            this.testLPFToolStripMenuItem.Click += new System.EventHandler(this.testLPFToolStripMenuItem_Click);
+            // 
+            // lDFToolStripMenuItem
+            // 
+            this.lDFToolStripMenuItem.Name = "lDFToolStripMenuItem";
+            this.lDFToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
+            this.lDFToolStripMenuItem.Text = "Filters";
+            this.lDFToolStripMenuItem.Click += new System.EventHandler(this.lDFToolStripMenuItem_Click);
             // 
             // chartBox
             // 
@@ -204,12 +232,12 @@
             this.chartBox.TabIndex = 2;
             this.chartBox.TabStop = false;
             // 
-            // lDFToolStripMenuItem
+            // voiceToolStripMenuItem
             // 
-            this.lDFToolStripMenuItem.Name = "lDFToolStripMenuItem";
-            this.lDFToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
-            this.lDFToolStripMenuItem.Text = "LDF";
-            this.lDFToolStripMenuItem.Click += new System.EventHandler(this.lDFToolStripMenuItem_Click);
+            this.voiceToolStripMenuItem.Name = "voiceToolStripMenuItem";
+            this.voiceToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
+            this.voiceToolStripMenuItem.Text = "Voice";
+            this.voiceToolStripMenuItem.Click += new System.EventHandler(this.voiceToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -247,9 +275,12 @@
         private System.Windows.Forms.ToolStripMenuItem discrToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fourierToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem impulseReactToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem lDFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem parseDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem antiTrendToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testLPFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem voiceToolStripMenuItem;
     }
 }
 
