@@ -763,17 +763,17 @@ namespace PlotBuilder.Sources
         {
             int rate = 0;
             NAudio.Wave.WaveFormat format = null;
-            var data = AudioFilter.readWav("rec_1channel.wav", out rate, out format);
-            dt = 1.0/rate;
-            fcut = 4000;
-            m = 64;
+            var data = AudioFilter.readWav("input.wav", out rate, out format);
+            dt = 1.0 / rate;
+            fcut = 500;
+            m = 128;
             pointsClear();
             mainTitle.Text = "Filter Voice";
             foreach (var area in chart.ChartAreas)
             {
                 area.AxisX.Maximum = data.Length / cutter;
                 area.AxisX.Minimum = 0;
-            }            
+            }
             foreach (var series in chart.Series)
             {
                 series.Points.SuspendUpdates();
@@ -794,19 +794,32 @@ namespace PlotBuilder.Sources
             titleTopRight.Text = "LPF";
             seriesTopRight.ChartType = SeriesChartType.FastLine;
             seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
-            List<double> lpw_lpf = Plots.LPF_Filter(fcut, m, dt);
+            List<double> filter = Plots.LPF_Filter(fcut, m, dt);
+            float[] data_out = new float[data.Length + 2 * m + 1];
             for (int k = Plots.minX; k < Plots.maxX; k++)
             {
                 double y = 0;
-                for (int l = Plots.minX; l < data.Length; l++)
+                for (int l = Plots.minX; l < data.Length + 2 * m + 1; l++)
                 {
-                    if (k >= l && (k - l) < lpw_lpf.Count)
-                        y += lpw_lpf[k - l] * data[l];
+                    if (k >= l && (k - l) < filter.Count)
+                    {
+                        y += filter[k - l] * data[l];
+                    }
                 }
                 seriesTopRight.Points.AddXY(k, y);
+                data_out[k] = (float)y;
+
             }
             messageTopRight = "";
-            
+
+            //cut first m and last m+1
+            float[] result = new float[data.Length];
+            for (int i = m; i < data.Length + m; i++)
+            {
+                result[i - m] = data_out[i];
+            }
+
+
             //fill bottom left series
             titleBottomLeft.Text = "DPF Input";
             seriesBottomLeft.ChartType = SeriesChartType.FastLine;
@@ -839,6 +852,8 @@ namespace PlotBuilder.Sources
             {
                 series.Points.ResumeUpdates();
             }
+
+            AudioFilter.writeWav("output.wav", format, result);
         }
     }
 }

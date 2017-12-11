@@ -10,7 +10,7 @@ namespace PlotBuilder.Sources
 {
     public class AudioFilter
     { 
-        public static string fileDirectory = "rec_1channel.wav";
+        public static string fileDirectory = "input.wav";
 
         public static double[] readWav(string filename, out int rate, out WaveFormat format)
         {
