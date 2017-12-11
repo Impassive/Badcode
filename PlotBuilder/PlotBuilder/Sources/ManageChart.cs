@@ -123,7 +123,15 @@ namespace PlotBuilder.Sources
             chart.MouseClick += Chart_MouseClick;
             //disable margin on graphics
             foreach (var chartAreas in chart.ChartAreas)
+            {
                 chartAreas.AxisX.IsMarginVisible = false;
+                chartAreas.AxisX.ScaleView.Zoomable = true;
+                chartAreas.AxisY.ScaleView.Zoomable = true;
+                chartAreas.CursorX.IsUserEnabled = true;
+                chartAreas.CursorX.IsUserSelectionEnabled = true;
+                chartAreas.CursorY.IsUserEnabled = true;
+                chartAreas.CursorY.IsUserSelectionEnabled = true;
+            }
         }
 
 
@@ -574,8 +582,8 @@ namespace PlotBuilder.Sources
         }
         static double fcut = 200;
         static int m = 32;
-        static double dt = 0.001;
-        static int cutter = 25;
+        static double dt = 0.002;
+        static int cutter = 1;
         public void chartBuildFilterLDF_Test()
         {
             pointsClear();
@@ -677,8 +685,8 @@ namespace PlotBuilder.Sources
             mainTitle.Text = "Filter LPF";
             foreach (var area in chart.ChartAreas)
             {
-                area.AxisX.Maximum = Parser.parser.Count-m;
-                area.AxisX.Minimum = 2*m;
+                area.AxisX.Maximum = Parser.parser.Count;
+                area.AxisX.Minimum = 0;
             }
             //fill top left series 
             titleTopLeft.Text = "Parse";
@@ -689,92 +697,148 @@ namespace PlotBuilder.Sources
             Plots.AddFilter(seriesTopLeft.Points, seriesTopLeft.ChartArea, fcut, m, dt);
             messageTopLeft = "";
 
-            //fill top right series
-            titleTopRight.Text = "LPF";
-            seriesTopRight.ChartType = SeriesChartType.Spline;
-            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
-            Plots.minX = 0;
-            Plots.maxX = Parser.parser.Count;
-            fcut = 200;
-            Plots.AddFilter(seriesTopRight.Points, seriesTopRight.ChartArea, fcut, m, dt);
-            messageTopRight = "";
+            ////fill top right series
+            //titleTopRight.Text = "LPF";
+            //seriesTopRight.ChartType = SeriesChartType.Spline;
+            //seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            //Plots.minX = 0;
+            //Plots.maxX = Parser.parser.Count;
+            //fcut = 200;
+            //Plots.AddFilter(seriesTopRight.Points, seriesTopRight.ChartArea, fcut, m, dt);
+            //messageTopRight = "";
 
             //fill bottom left series
-            titleBottomLeft.Text = "HPF";
-            seriesBottomLeft.ChartType = SeriesChartType.Spline;
+            titleBottomLeft.Text = "BPF";
+            seriesBottomLeft.ChartType = SeriesChartType.FastLine;
             seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
             Plots.minX = 0;
             Plots.maxX = Parser.parser.Count;
             fcut = 190;
-            Plots.AddFilter(seriesBottomLeft.Points, seriesBottomLeft.ChartArea, fcut, m, dt);
+            Plots.AddFilter(seriesBottomLeft.Points, seriesBottomRight.ChartArea, fcut, m, dt);
             messageBottomLeft = "";
 
-            //fill bottom right series
-            titleBottomRight.Text = "BPF";
-            seriesBottomRight.ChartType = SeriesChartType.Spline;
-            seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            ////fill bottom right series
+            //titleBottomRight.Text = "BPF";
+            //seriesBottomRight.ChartType = SeriesChartType.Spline;
+            //seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            //Plots.minX = 0;
+            //Plots.maxX = Parser.parser.Count;
+            //fcut = 200;
+            //Plots.AddFilter(seriesBottomRight.Points, seriesBottomRight.ChartArea, fcut, m, dt);
+            //messageBottomRight = "";
+
+            //fill top right series
+            titleTopRight.Text = "DPF Input";
+            seriesTopRight.ChartType = SeriesChartType.Spline;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
             Plots.minX = 0;
             Plots.maxX = Parser.parser.Count;
-            fcut = 200;
-            Plots.AddFilter(seriesBottomRight.Points, seriesBottomRight.ChartArea, fcut, m, dt);
+            Plots.PrepareDPF_Filter(seriesTopLeft.Points);
+            //Plots.DPF(seriesTopRight.Points, seriesTopRight.ChartArea);
+            chartAreaTopRight.AxisX.Maximum = Plots.CalculateBorder(dt);
+            for (int i = 0; i < Plots.FourierArr.Length; i++)
+            {
+                seriesTopRight.Points.AddXY(2 * i * Plots.CalculateBorder(dt) / Plots.FourierArr.Length, Plots.FourierArr[i].C * (2 * m + 1));
+            }
+            messageTopRight = "";
+
+            //fill bottom right series
+            titleBottomRight.Text = "DPF Output";
+            seriesTopRight.ChartType = SeriesChartType.FastLine;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.minX = 0;
+            Plots.maxX = Parser.parser.Count;
+            Plots.PrepareDPF_Filter(seriesBottomLeft.Points);
+            //Plots.DPF(seriesBottomRight.Points, seriesTopRight.ChartArea);
+            chartAreaBottomRight.AxisX.Maximum = Plots.CalculateBorder(dt);
+            for (int i = 0; i < Plots.FourierArr.Length; i++)
+            {
+                seriesBottomRight.Points.AddXY(2 * i * Plots.CalculateBorder(dt) / Plots.FourierArr.Length, Plots.FourierArr[i].C * (2 * m + 1));
+            }
             messageBottomRight = "";
         }
 
 
         public void chartBuildVoiceFilter()
         {
-            AudioFilter.Do();
-            byte[] bytes = new byte[AudioFilter.audio.Length];
+            int rate = 0;
+            NAudio.Wave.WaveFormat format = null;
+            var data = AudioFilter.readWav("rec_1channel.wav", out rate, out format);
+            dt = 1.0/rate;
+            fcut = 4000;
+            m = 64;
             pointsClear();
             mainTitle.Text = "Filter Voice";
             foreach (var area in chart.ChartAreas)
             {
-                area.AxisX.Maximum = AudioFilter.audio.Length / cutter;
+                area.AxisX.Maximum = data.Length / cutter;
                 area.AxisX.Minimum = 0;
+            }            
+            foreach (var series in chart.Series)
+            {
+                series.Points.SuspendUpdates();
             }
             //fill top left series 
             titleTopLeft.Text = "Input";
-            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.ChartType = SeriesChartType.FastLine;
             seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
             Plots.minX = 0;
-            Plots.maxX = AudioFilter.audio.Length;
-            Plots.AddVoiceFilter(seriesTopLeft.Points, seriesTopLeft.ChartArea, fcut, m, dt);
+            Plots.maxX = data.Length;
+            for (int i = 0; i < data.Length; i++)
+            {
+                seriesTopLeft.Points.AddXY(i, data[i]);
+            }
             messageTopLeft = "";
 
             //fill top right series
             titleTopRight.Text = "LPF";
-            seriesTopRight.ChartType = SeriesChartType.Spline;
+            seriesTopRight.ChartType = SeriesChartType.FastLine;
             seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
-            Plots.minX = 0;
-            Plots.maxX = AudioFilter.audio.Length;
-            fcut = 200;
-            Plots.AddVoiceFilter(seriesTopRight.Points, seriesTopRight.ChartArea, fcut, m, dt);
-            //bytes = seriesTopRight.Points.Select(point => (byte)point.YValues[0]).ToArray();
-            //AudioFilter.Reverse("outputLPF", bytes);
+            List<double> lpw_lpf = Plots.LPF_Filter(fcut, m, dt);
+            for (int k = Plots.minX; k < Plots.maxX; k++)
+            {
+                double y = 0;
+                for (int l = Plots.minX; l < data.Length; l++)
+                {
+                    if (k >= l && (k - l) < lpw_lpf.Count)
+                        y += lpw_lpf[k - l] * data[l];
+                }
+                seriesTopRight.Points.AddXY(k, y);
+            }
             messageTopRight = "";
-
+            
             //fill bottom left series
-            titleBottomLeft.Text = "HPF";
-            seriesBottomLeft.ChartType = SeriesChartType.Spline;
+            titleBottomLeft.Text = "DPF Input";
+            seriesBottomLeft.ChartType = SeriesChartType.FastLine;
             seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
             Plots.minX = 0;
-            Plots.maxX = AudioFilter.audio.Length;
-            fcut = 190;
-            Plots.AddVoiceFilter(seriesBottomLeft.Points, seriesBottomLeft.ChartArea, fcut, m, dt);
-            bytes = seriesBottomLeft.Points.Select(point => (byte)point.YValues[0]).ToArray();
-            AudioFilter.Reverse("outputHPF", bytes);
+            Plots.maxX = (int)Plots.CalculateBorder(dt);
+            Plots.PrepareDPF_Filter(seriesTopLeft.Points);
+            chartAreaBottomLeft.AxisX.Maximum = Plots.CalculateBorder(dt);
+            for (int i = 0; i < Plots.FourierArr.Length; i++)
+            {
+                seriesBottomLeft.Points.AddXY(2 * i * Plots.CalculateBorder(dt) / Plots.FourierArr.Length, Plots.FourierArr[i].C * (2 * m + 1));
+            }
             messageBottomLeft = "";
 
             //fill bottom right series
-            titleBottomRight.Text = "BPF";
-            seriesBottomRight.ChartType = SeriesChartType.Spline;
+            titleBottomRight.Text = "DPF Output";
+            seriesBottomRight.ChartType = SeriesChartType.FastLine;
             seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
             Plots.minX = 0;
-            Plots.maxX = AudioFilter.audio.Length;
-            fcut = 200;
-            Plots.AddVoiceFilter(seriesBottomRight.Points, seriesBottomRight.ChartArea, fcut, m, dt);
+            Plots.maxX = (int)Plots.CalculateBorder(dt);
+            Plots.PrepareDPF_Filter(seriesTopRight.Points);
+            chartAreaBottomRight.AxisX.Maximum = Plots.CalculateBorder(dt);
+            for (int i = 0; i < Plots.FourierArr.Length; i++)
+            {
+                seriesBottomRight.Points.AddXY(2 * i * Plots.CalculateBorder(dt) / Plots.FourierArr.Length, Plots.FourierArr[i].C * (2 * m + 1));
+            }
             messageBottomRight = "";
 
+            foreach (var series in chart.Series)
+            {
+                series.Points.ResumeUpdates();
+            }
         }
     }
 }

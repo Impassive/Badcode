@@ -253,7 +253,7 @@ namespace PlotBuilder.Sources
                     points.Clear();
                     for (int i = minX; i < maxX - 5; i++)
                     {
-                        points.AddXY(i, FourierArr[i].Im);
+                        points.AddXY(i, FourierArr[i].C);
                     }
                     break;
                 default:
@@ -506,14 +506,14 @@ namespace PlotBuilder.Sources
                     break;
                 case "ChartAreaBottomRight":
                     points.Clear();
-                    List<double> lpw_bpf = BPF_Filter(fcut, 210, m, dt);
+                    List<double> lpw_bps = BPF_Filter(20, 70, m, dt);
                     for (int k = minX; k < maxX; k++)
                     {
                         double y = 0;
                         for (int l = minX; l < Parser.parser.Count; l++)
                         {
-                            if (k >= l && (k - l) < lpw_bpf.Count)
-                                y += lpw_bpf[k - l] * Parser.parser[l];
+                            if (k >= l && (k - l) < lpw_bps.Count)
+                                y += lpw_bps[k - l] * Parser.parser[l];
                         }
                         points.AddXY(k, y);
                     }
@@ -532,7 +532,7 @@ namespace PlotBuilder.Sources
                     points.Clear();
                     for (int i = 0; i < maxX; i++)
                     {
-                        points.AddXY(i, AudioFilter.audio[i]);
+                        points.AddXY(i, 1);
                     }
                     break;
                 case "ChartAreaTopRight":
@@ -541,10 +541,10 @@ namespace PlotBuilder.Sources
                     for (int k = minX; k < maxX; k++)
                     {
                         double y = 0;
-                        for (int l = minX; l < AudioFilter.audio.Length; l++)
+                        for (int l = minX; l < 1; l++)
                         {
                             if (k >= l && (k - l) < lpw_lpf.Count)
-                                y += lpw_lpf[k - l] * AudioFilter.audio[l];
+                                y += lpw_lpf[k - l] * 1;
                         }
                         points.AddXY(k, y);
                     }
@@ -555,10 +555,10 @@ namespace PlotBuilder.Sources
                     for (int k = minX; k < maxX; k++)
                     {
                         double y = 0;
-                        for (int l = minX; l < AudioFilter.audio.Length; l++)
+                        for (int l = minX; l < 1; l++)
                         {
                             if (k >= l && (k - l) < lpw_hpf.Count)
-                                y += lpw_hpf[k - l] * AudioFilter.audio[l];
+                                y += lpw_hpf[k - l] * 1;
                         }
                         points.AddXY(k, y);
                     }
@@ -569,10 +569,10 @@ namespace PlotBuilder.Sources
                     for (int k = minX; k < maxX; k++)
                     {
                         double y = 0;
-                        for (int l = minX; l < AudioFilter.audio.Length; l++)
+                        for (int l = minX; l < 1; l++)
                         {
                             if (k >= l && (k - l) < lpw_bpf.Count)
-                                y += lpw_bpf[k - l] * AudioFilter.audio[l];
+                                y += lpw_bpf[k - l] * 1;
                         }
                         points.AddXY(k, y);
                     }

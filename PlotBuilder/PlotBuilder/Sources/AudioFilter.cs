@@ -9,45 +9,37 @@ using System.Threading.Tasks;
 namespace PlotBuilder.Sources
 {
     public class AudioFilter
-    {
-        static string fileDirectory = "input.mp3";
-        public static byte[] audio;
-        static WaveOut player;
-        //static FileStream fs = new FileStream(fileDirectory, FileMode.Open);
-        //static BinaryReader br = new BinaryReader(fs);
-        public static void Do()
-        {
-            var bytes = File.ReadAllBytes(fileDirectory);
-            var mp3Stream = new MemoryStream(bytes);
-            var mp3FileReader = new Mp3FileReader(mp3Stream);
-            var wave32 = new WaveChannel32(mp3FileReader, 0.1f, 1f);
-            var ds = new DirectSoundOut();
-            ds.Init(wave32);
-            ds.Play();
-            audio = bytes;
-        }
-        public static void Reverse(string name, byte[] arr)
-        {
-            //if (arr.Length == 0)
-            //    arr = audio;
-            //player = new WaveOut();
-            //IWaveProvider provider = new RawSourceWaveStream(
-            //             new MemoryStream(audio), new WaveFormat());
+    { 
+        public static string fileDirectory = "rec_1channel.wav";
 
-            //player.Init(provider);
-            //player.Play();
+        public static double[] readWav(string filename, out int rate, out WaveFormat format)
+        {
+            WaveFileReader reader = new WaveFileReader(filename);
+            format = reader.WaveFormat;
+            float[] buffer;
+            double[] data = new double[reader.SampleCount];
+            int counter = 0;
+            rate = reader.WaveFormat.SampleRate;
 
-            //for (int i=0; i<25;i++)
-            //{
-            //    arr[i] = audio[i];
-            //}
-            var mp3Stream = new MemoryStream(arr);
-            var mp3FileReader = new Mp3FileReader(mp3Stream);
-            var wave32 = new WaveChannel32(mp3FileReader, 0.1f, 1f);
-            var ds = new DirectSoundOut();
-            ds.Init(wave32);
-            ds.Play();
+            while ((buffer = reader.ReadNextSampleFrame()) != null)
+            {
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    data[counter++] = buffer[i];
+                }
+            }
+            reader.Close();
+            return data;
         }
+        public static void writeWav(string path, WaveFormat format, float[] samples)
+        {
+            using (WaveFileWriter writer = new WaveFileWriter(path, format))
+            {
+                writer.WriteSamples(samples, 0, samples.Length);
+                writer.Flush();
+            }
+        }
+
     }
-}
+    }
 
