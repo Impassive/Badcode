@@ -49,6 +49,7 @@ namespace PlotBuilder.Sources
         public static double CalcRMS(DataPointCollection points)
         {
             double sum = 0;
+
             foreach (var point in points)
             {
                 sum += Math.Pow(point.YValues[0], 2);

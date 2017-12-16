@@ -48,8 +48,11 @@
             this.antiTrendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testLPFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.chartBox = new System.Windows.Forms.GroupBox();
             this.voiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chartBox = new System.Windows.Forms.GroupBox();
+            this.kursToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lukoilToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,7 +70,8 @@
             this.impulseReactToolStripMenuItem,
             this.testingToolStripMenuItem,
             this.lDFToolStripMenuItem,
-            this.voiceToolStripMenuItem});
+            this.voiceToolStripMenuItem,
+            this.kursToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(983, 28);
@@ -221,6 +225,13 @@
             this.lDFToolStripMenuItem.Text = "Filters";
             this.lDFToolStripMenuItem.Click += new System.EventHandler(this.lDFToolStripMenuItem_Click);
             // 
+            // voiceToolStripMenuItem
+            // 
+            this.voiceToolStripMenuItem.Name = "voiceToolStripMenuItem";
+            this.voiceToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
+            this.voiceToolStripMenuItem.Text = "Voice";
+            this.voiceToolStripMenuItem.Click += new System.EventHandler(this.voiceToolStripMenuItem_Click);
+            // 
             // chartBox
             // 
             this.chartBox.AutoSize = true;
@@ -232,12 +243,28 @@
             this.chartBox.TabIndex = 2;
             this.chartBox.TabStop = false;
             // 
-            // voiceToolStripMenuItem
+            // kursToolStripMenuItem
             // 
-            this.voiceToolStripMenuItem.Name = "voiceToolStripMenuItem";
-            this.voiceToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
-            this.voiceToolStripMenuItem.Text = "Voice";
-            this.voiceToolStripMenuItem.Click += new System.EventHandler(this.voiceToolStripMenuItem_Click);
+            this.kursToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lukoilToolStripMenuItem,
+            this.modelToolStripMenuItem});
+            this.kursToolStripMenuItem.Name = "kursToolStripMenuItem";
+            this.kursToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
+            this.kursToolStripMenuItem.Text = "Kurs";
+            // 
+            // lukoilToolStripMenuItem
+            // 
+            this.lukoilToolStripMenuItem.Name = "lukoilToolStripMenuItem";
+            this.lukoilToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.lukoilToolStripMenuItem.Text = "Lukoil";
+            this.lukoilToolStripMenuItem.Click += new System.EventHandler(this.lukoilToolStripMenuItem_Click);
+            // 
+            // modelToolStripMenuItem
+            // 
+            this.modelToolStripMenuItem.Name = "modelToolStripMenuItem";
+            this.modelToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.modelToolStripMenuItem.Text = "Model";
+            this.modelToolStripMenuItem.Click += new System.EventHandler(this.modelToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -281,6 +308,9 @@
         private System.Windows.Forms.ToolStripMenuItem antiTrendToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testLPFToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem voiceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem kursToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lukoilToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modelToolStripMenuItem;
     }
 }
 

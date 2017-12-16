@@ -763,9 +763,9 @@ namespace PlotBuilder.Sources
         {
             int rate = 0;
             NAudio.Wave.WaveFormat format = null;
-            var data = AudioFilter.readWav("input.wav", out rate, out format);
+            var data = AudioFilter.readWav("input_prep.wav", out rate, out format);
             dt = 1.0 / rate;
-            fcut = 500;
+            fcut = 1800;
             m = 128;
             pointsClear();
             mainTitle.Text = "Filter Voice";
@@ -791,10 +791,10 @@ namespace PlotBuilder.Sources
             messageTopLeft = "";
 
             //fill top right series
-            titleTopRight.Text = "LPF";
+            titleTopRight.Text = "BPF";
             seriesTopRight.ChartType = SeriesChartType.FastLine;
             seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
-            List<double> filter = Plots.LPF_Filter(fcut, m, dt);
+            List<double> filter = Plots.BPF_Filter(400,900, m, dt);
             float[] data_out = new float[data.Length + 2 * m + 1];
             for (int k = Plots.minX; k < Plots.maxX; k++)
             {
@@ -853,7 +853,119 @@ namespace PlotBuilder.Sources
                 series.Points.ResumeUpdates();
             }
 
-            AudioFilter.writeWav("output.wav", format, result);
+            AudioFilter.writeWav("outputBPF_.wav", format, result);
+        }
+
+        public void Kurs_Lukoil()
+        {
+            double[] data = Parser.GetData("DataSheet.txt");
+            pointsClear();
+            mainTitle.Text = "Lukoil";
+            foreach (var area in chart.ChartAreas)
+            {
+                area.AxisX.Maximum = data.Length;
+                area.AxisX.Minimum = 0;
+            }
+            foreach (var series in chart.Series)
+            {
+                series.Points.SuspendUpdates();
+            }
+            //fill top left series 
+            titleTopLeft.Text = "Input";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.minX = 0;
+            Plots.maxX = data.Length;
+            for (int i=0; i< data.Length;i++)
+            {
+                seriesTopLeft.Points.AddXY(i,data[i]);
+            }
+            messageTopLeft = Statistics.GetStatistics(seriesTopLeft.Points);
+
+            //fill top right series
+            titleTopRight.Text = "AntiTrend Input";
+            seriesTopRight.ChartType = SeriesChartType.FastLine;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            double[] output = Plots.Antitrend(data);
+            for (int i = 0; i < data.Length; i++)
+            {
+                seriesTopRight.Points.AddXY(i, output[i]);
+            }
+            messageTopRight = Statistics.GetStatistics(seriesTopRight.Points); 
+
+            //fill bottom left series
+            titleBottomLeft.Text = "AntiSpike Input";
+            seriesBottomLeft.ChartType = SeriesChartType.FastLine;
+            seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+            output = Plots.AntiSpike(seriesTopRight.Points,0.75);
+            for (int i = 0; i < output.Length; i++)
+            {
+                seriesBottomLeft.Points.AddXY(i, output[i]);
+            }
+            messageBottomLeft = Statistics.GetStatistics(seriesBottomLeft.Points);
+
+            //fill bottom right series
+            titleBottomRight.Text = "Auto Correlation";
+            seriesBottomRight.ChartType = SeriesChartType.FastLine;
+            seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesBottomLeft.Points, seriesBottomLeft.Points);
+            messageBottomRight = "";
+        }
+
+        public void Kurs_Model()
+        {
+            double[] data = Parser.GetData("DataSheet.txt");
+            pointsClear();
+            mainTitle.Text = "Lukoil";
+            foreach (var area in chart.ChartAreas)
+            {
+                area.AxisX.Maximum = data.Length;
+                area.AxisX.Minimum = 0;
+            }
+            foreach (var series in chart.Series)
+            {
+                series.Points.SuspendUpdates();
+            }
+            //fill top left series 
+            titleTopLeft.Text = "Input";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.minX = 0;
+            Plots.maxX = data.Length;
+            for (int i = 0; i < data.Length; i++)
+            {
+                seriesTopLeft.Points.AddXY(i, data[i]);
+            }
+            messageTopLeft = Statistics.GetStatistics(seriesTopLeft.Points);
+
+            //fill top right series
+            titleTopRight.Text = "AntiTrend Input";
+            seriesTopRight.ChartType = SeriesChartType.FastLine;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            double[] output = Plots.Antitrend(data);
+            for (int i = 0; i < data.Length; i++)
+            {
+                seriesTopRight.Points.AddXY(i, output[i]);
+            }
+            messageTopRight = Statistics.GetStatistics(seriesTopRight.Points);
+
+            //fill bottom left series
+            titleBottomLeft.Text = "AntiSpike Input";
+            seriesBottomLeft.ChartType = SeriesChartType.FastLine;
+            seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+            output = Plots.AntiSpike(seriesTopRight.Points, 0.75);
+            for (int i = 0; i < output.Length; i++)
+            {
+                seriesBottomLeft.Points.AddXY(i, output[i]);
+            }
+            messageBottomLeft = Statistics.GetStatistics(seriesBottomLeft.Points);
+
+            //fill bottom right series
+            titleBottomRight.Text = "Auto Correlation";
+            seriesBottomRight.ChartType = SeriesChartType.FastLine;
+            seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesBottomLeft.Points, seriesBottomLeft.Points);
+            messageBottomRight = "";
         }
     }
 }

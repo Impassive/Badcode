@@ -344,16 +344,27 @@ namespace PlotBuilder.Sources
             }
         }
 
-        public static void AntiSpike(DataPointCollection points)
+        public static double[] AntiSpike(DataPointCollection points, double num = 4)
         {
             double disp = Statistics.CalcRMS(points);
-            foreach (var point in points)
+            double mean = Statistics.CalcAVG(points);
+            double[] values = points.Select(y => y.YValues[0]).ToArray();
+
+            for (int i = 0; i < values.Length; i++)
             {
-                if (point.YValues[0] > disp)
-                { }
-                //дописать = (текущее значение = пред - след) /2
-                //point.YValues[0]=;
+                if (values[i] > mean + Math.Sqrt(num * disp) || values[i] < -( mean + Math.Sqrt(num * disp)))
+                {
+                    if (i != 0 && i != values.Length - 1)
+                        values[i] = (values[i - 1] + values[i + 1]) / 2;
+                    else if (i == 0)
+                    {
+                        values[i] = (values[i + 1] + values[i + 2]) / 2;
+                    }
+                    else
+                        values[i] = (values[i - 1] + values[i - 2]) / 2;
+                }
             }
+            return values;
         }
         public static void Test(DataPointCollection points, string location)
         {
@@ -487,7 +498,7 @@ namespace PlotBuilder.Sources
                             if (k >= l && (k - l) < lpw_lpf.Count)
                                 y += lpw_lpf[k - l] * Parser.parser[l];
                         }
-                            points.AddXY(k, y);
+                        points.AddXY(k, y);
                     }
                     break;
                 case "ChartAreaBottomLeft":
@@ -580,6 +591,39 @@ namespace PlotBuilder.Sources
                 default:
                     break;
             }
+
+        }
+        internal static double[] Antitrend(double[] data)
+        {
+            double[] output = data;
+            int W = 15;
+            double Xk = 0;
+            for (int i = 0; i < data.Length / W; i++)
+            {
+                Xk = 0;
+                for (int j = i * W; j < (i + 1) * W; j++)
+                {
+                    Xk += output[j];
+                }
+                Xk = Xk / W;
+                for (int j = i * W; j < (i + 1) * W; j++)
+                {
+                    output[j] -= Xk;
+                }
+            }
+
+            //last el
+            Xk = 0;
+            for (int j = (data.Length / W) * W; j < data.Length; j++)
+            {
+                Xk += output[j];
+            }
+            Xk = Xk / (data.Length - (data.Length / W) * W);
+            for (int j = (data.Length / W) * W; j < data.Length; j++)
+            {
+                output[j] -= Xk;
+            }
+            return output;
         }
     }
 }

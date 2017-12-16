@@ -143,5 +143,16 @@ namespace PlotBuilder
         {
             chart.chartBuildVoiceFilter();
         }
+
+
+        private void lukoilToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.Kurs_Lukoil();
+        }
+
+        private void modelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.Kurs_Model();
+        }
     }
 }

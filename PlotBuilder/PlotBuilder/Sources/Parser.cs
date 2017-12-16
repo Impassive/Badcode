@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PlotBuilder.Sources
-{    
+{
     public static class Parser
     {
         static string fileDirectory = "php.dat";
@@ -15,15 +15,28 @@ namespace PlotBuilder.Sources
         public static List<float> parser = new List<float>();
         public static void Do()
         {
-            int hexIn;           
+            int hexIn;
             float res;
             parser.Clear();
-            for (int i = 0; i<1000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 res = br.ReadSingle();
                 parser.Add(res);
             }
-            String hex;           
+            String hex;
+        }
+        public static double[] GetData(string fileDirectory)
+        {
+            List<double> data = new List<double>();
+            string line = null;
+            System.IO.StreamReader file = new System.IO.StreamReader(fileDirectory);
+            while ((line = file.ReadLine()) != null)
+            {
+                data.Add(Convert.ToDouble(line, System.Globalization.CultureInfo.InvariantCulture));
+            }
+            file.Close();
+
+            return data.ToArray();
         }
     }
 }
