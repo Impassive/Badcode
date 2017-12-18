@@ -794,7 +794,7 @@ namespace PlotBuilder.Sources
             titleTopRight.Text = "BPF";
             seriesTopRight.ChartType = SeriesChartType.FastLine;
             seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
-            List<double> filter = Plots.BPF_Filter(400,900, m, dt);
+            List<double> filter = Plots.BPF_Filter(400, 900, m, dt);
             float[] data_out = new float[data.Length + 2 * m + 1];
             for (int k = Plots.minX; k < Plots.maxX; k++)
             {
@@ -876,62 +876,6 @@ namespace PlotBuilder.Sources
             seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
             Plots.minX = 0;
             Plots.maxX = data.Length;
-            for (int i=0; i< data.Length;i++)
-            {
-                seriesTopLeft.Points.AddXY(i,data[i]);
-            }
-            messageTopLeft = Statistics.GetStatistics(seriesTopLeft.Points);
-
-            //fill top right series
-            titleTopRight.Text = "AntiTrend Input";
-            seriesTopRight.ChartType = SeriesChartType.FastLine;
-            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
-            double[] output = Plots.Antitrend(data);
-            for (int i = 0; i < data.Length; i++)
-            {
-                seriesTopRight.Points.AddXY(i, output[i]);
-            }
-            messageTopRight = Statistics.GetStatistics(seriesTopRight.Points); 
-
-            //fill bottom left series
-            titleBottomLeft.Text = "AntiSpike Input";
-            seriesBottomLeft.ChartType = SeriesChartType.FastLine;
-            seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
-            output = Plots.AntiSpike(seriesTopRight.Points,0.75);
-            for (int i = 0; i < output.Length; i++)
-            {
-                seriesBottomLeft.Points.AddXY(i, output[i]);
-            }
-            messageBottomLeft = Statistics.GetStatistics(seriesBottomLeft.Points);
-
-            //fill bottom right series
-            titleBottomRight.Text = "Auto Correlation";
-            seriesBottomRight.ChartType = SeriesChartType.FastLine;
-            seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
-            Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesBottomLeft.Points, seriesBottomLeft.Points);
-            messageBottomRight = "";
-        }
-
-        public void Kurs_Model()
-        {
-            double[] data = Parser.GetData("DataSheet.txt");
-            pointsClear();
-            mainTitle.Text = "Lukoil";
-            foreach (var area in chart.ChartAreas)
-            {
-                area.AxisX.Maximum = data.Length;
-                area.AxisX.Minimum = 0;
-            }
-            foreach (var series in chart.Series)
-            {
-                series.Points.SuspendUpdates();
-            }
-            //fill top left series 
-            titleTopLeft.Text = "Input";
-            seriesTopLeft.ChartType = SeriesChartType.Spline;
-            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
-            Plots.minX = 0;
-            Plots.maxX = data.Length;
             for (int i = 0; i < data.Length; i++)
             {
                 seriesTopLeft.Points.AddXY(i, data[i]);
@@ -965,6 +909,173 @@ namespace PlotBuilder.Sources
             seriesBottomRight.ChartType = SeriesChartType.FastLine;
             seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
             Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesBottomLeft.Points, seriesBottomLeft.Points);
+            messageBottomRight = "";
+        }
+
+        public void Kurs_Model()
+        {
+
+            //x(t) = c * exp((µ – σ2 / 2) * t + σ * r(t))
+
+            //где c – положительная константа > 1,  
+            //r(t) - случайный процесс например в интервале[0, c], 
+            //µ -среднее значение r(t), σ – стандартное отклонение r(t).
+            //double[] data = new double[5000];
+            double[] data = Parser.GetData("DataSheet.txt");
+            pointsClear();
+            double c = 0.015;
+            Random r = new Random(5);
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] = r.NextDouble() * c;
+            }
+            double avg = Statistics.CalcAVG(data);
+            double sigma = Math.Sqrt(Statistics.CalcDispersion(data));
+            mainTitle.Text = "Model";
+            foreach (var area in chart.ChartAreas)
+            {
+                area.AxisX.Maximum = data.Length;
+                area.AxisX.Minimum = 0;
+            }
+            foreach (var series in chart.Series)
+            {
+                series.Points.SuspendUpdates();
+            }
+            //fill top left series 
+            titleTopLeft.Text = "Input Random [0, " + c + "]";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.minX = 0;
+            Plots.maxX = data.Length;
+            //x(t) = c * exp((avg – sigma^2 / 2) * i + sigma * data(i))
+            for (int i = 0; i < data.Length; i++)
+            {
+                seriesTopLeft.Points.AddXY(i, c * Math.Pow(Math.E, ((avg - Math.Pow(sigma, 2) / 2) * i + sigma * data[i])));
+            }
+            messageTopLeft = Statistics.GetStatistics(seriesTopLeft.Points);
+            data = seriesTopLeft.Points.Select(y => y.YValues[0]).ToArray();
+            //fill top right series
+            titleTopRight.Text = "AntiTrend Input";
+            seriesTopRight.ChartType = SeriesChartType.FastLine;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            double[] output = Plots.Antitrend(data);
+            for (int i = 0; i < data.Length; i++)
+            {
+                seriesTopRight.Points.AddXY(i, output[i]);
+            }
+            messageTopRight = Statistics.GetStatistics(seriesTopRight.Points);
+
+            //fill bottom left series
+            titleBottomLeft.Text = "AntiSpike Input";
+            seriesBottomLeft.ChartType = SeriesChartType.FastLine;
+            seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+            output = Plots.AntiSpike(seriesTopRight.Points, 4);
+            for (int i = 0; i < output.Length; i++)
+            {
+                seriesBottomLeft.Points.AddXY(i, output[i]);
+            }
+            messageBottomLeft = Statistics.GetStatistics(seriesBottomLeft.Points);
+
+            //fill bottom right series
+            titleBottomRight.Text = "Auto Correlation";
+            seriesBottomRight.ChartType = SeriesChartType.FastLine;
+            seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesTopRight.Points, seriesTopRight.Points);
+            messageBottomRight = "";
+        }
+        public void Kurs_Model_My()
+        {
+            double[] data_real = Parser.GetData("DataSheet.txt");
+            double[] data = new double[data_real.Length];
+            for (int i = 0; i < data_real.Length; i++)
+                data[i] = data_real[i];
+            pointsClear();
+            Random r = new Random(555555);
+            data[0] = 0;
+            double rand = 0;
+            for (int i = 1; i < data.Length; i++)
+            {
+                rand = r.NextDouble();
+                if (rand > 0.5)
+                    data[i] = data[i - 1] + r.NextDouble();
+                else data[i] = data[i - 1] - r.NextDouble();
+            }
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] = -data[i];
+            }
+            //replce first part with another randomization
+            for (int i = 0; i < 400; i++)
+            {
+                rand = r.NextDouble();
+                if (rand > 0.8)
+                    data[i] = data[401] + r.NextDouble();
+                else if (rand > 0.7) data[i] = data[401] - r.NextDouble();
+                else data[i] = data[i - 1];
+            }
+
+            //scale model to real
+            double scale = 0;
+            for (int i = 0; i < data.Length; i++)
+            {
+                scale += data_real[i] / data[i];
+            }
+            scale = scale / data.Length;
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] *= scale;
+            }
+            double avg = Statistics.CalcAVG(data);
+            double sigma = Math.Sqrt(Statistics.CalcDispersion(data));
+            mainTitle.Text = "Model";
+            foreach (var area in chart.ChartAreas)
+            {
+                area.AxisX.Maximum = data.Length;
+                area.AxisX.Minimum = 0;
+            }
+            foreach (var series in chart.Series)
+            {
+                series.Points.SuspendUpdates();
+            }
+            //fill top left series 
+            titleTopLeft.Text = "Input Random";
+            seriesTopLeft.ChartType = SeriesChartType.Spline;
+            seriesTopLeft.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.minX = 0;
+            Plots.maxX = data.Length;
+            for (int i = 0; i < data.Length; i++)
+            {
+                seriesTopLeft.Points.AddXY(i, data[i]);
+            }
+            messageTopLeft = Statistics.GetStatistics(seriesTopLeft.Points);
+            data = seriesTopLeft.Points.Select(y => y.YValues[0]).ToArray();
+            //fill top right series
+            titleTopRight.Text = "AntiTrend Input";
+            seriesTopRight.ChartType = SeriesChartType.FastLine;
+            seriesTopRight.BorderDashStyle = ChartDashStyle.Solid;
+            double[] output = Plots.Antitrend(data);
+            for (int i = 0; i < data.Length; i++)
+            {
+                seriesTopRight.Points.AddXY(i, output[i]);
+            }
+            messageTopRight = Statistics.GetStatistics(seriesTopRight.Points);
+
+            //fill bottom left series
+            titleBottomLeft.Text = "AntiSpike Input";
+            seriesBottomLeft.ChartType = SeriesChartType.FastLine;
+            seriesBottomLeft.BorderDashStyle = ChartDashStyle.Solid;
+            output = Plots.AntiSpike(seriesTopRight.Points, 4);
+            for (int i = 0; i < output.Length; i++)
+            {
+                seriesBottomLeft.Points.AddXY(i, output[i]);
+            }
+            messageBottomLeft = Statistics.GetStatistics(seriesBottomLeft.Points);
+
+            //fill bottom right series
+            titleBottomRight.Text = "Auto Correlation";
+            seriesBottomRight.ChartType = SeriesChartType.FastLine;
+            seriesBottomRight.BorderDashStyle = ChartDashStyle.Solid;
+            Plots.AutoCrossCorrelation(seriesBottomRight.Points, seriesTopRight.Points, seriesTopRight.Points);
             messageBottomRight = "";
         }
     }

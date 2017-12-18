@@ -45,6 +45,16 @@ namespace PlotBuilder.Sources
             }
             return (double)(sum / points.Count);
         }
+
+        public static double CalcAVG(double[] points)
+        {
+            double sum = 0;
+            foreach (var point in points)
+            {
+                sum += point;
+            }
+            return (double)(sum / points.Length);
+        }
         //Среднеквадратичное
         public static double CalcRMS(DataPointCollection points)
         {
@@ -67,6 +77,17 @@ namespace PlotBuilder.Sources
                 dispersion += Math.Pow(point.YValues[0] - avg, pow);
             }
             return dispersion / points.Count;
+        }
+        public static double CalcDispersion(double[] points, int pow = 2)
+        {
+            double avg = 0;
+            double dispersion = 0;
+            avg = CalcAVG(points);
+            foreach (var point in points)
+            {
+                dispersion += Math.Pow(point - avg, pow);
+            }
+            return dispersion / points.Length;
         }
         //Стандартное отклонение
         public static double CalcStandardDeviation(DataPointCollection points)

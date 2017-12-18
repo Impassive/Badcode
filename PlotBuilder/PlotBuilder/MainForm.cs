@@ -154,5 +154,10 @@ namespace PlotBuilder
         {
             chart.Kurs_Model();
         }
+
+        private void myModelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart.Kurs_Model_My();
+        }
     }
 }

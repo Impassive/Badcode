@@ -49,10 +49,11 @@
             this.testLPFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.voiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.chartBox = new System.Windows.Forms.GroupBox();
             this.kursToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lukoilToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chartBox = new System.Windows.Forms.GroupBox();
+            this.myModelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -232,22 +233,12 @@
             this.voiceToolStripMenuItem.Text = "Voice";
             this.voiceToolStripMenuItem.Click += new System.EventHandler(this.voiceToolStripMenuItem_Click);
             // 
-            // chartBox
-            // 
-            this.chartBox.AutoSize = true;
-            this.chartBox.BackColor = System.Drawing.SystemColors.Control;
-            this.chartBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chartBox.Location = new System.Drawing.Point(0, 28);
-            this.chartBox.Name = "chartBox";
-            this.chartBox.Size = new System.Drawing.Size(983, 515);
-            this.chartBox.TabIndex = 2;
-            this.chartBox.TabStop = false;
-            // 
             // kursToolStripMenuItem
             // 
             this.kursToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lukoilToolStripMenuItem,
-            this.modelToolStripMenuItem});
+            this.modelToolStripMenuItem,
+            this.myModelToolStripMenuItem});
             this.kursToolStripMenuItem.Name = "kursToolStripMenuItem";
             this.kursToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
             this.kursToolStripMenuItem.Text = "Kurs";
@@ -265,6 +256,24 @@
             this.modelToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.modelToolStripMenuItem.Text = "Model";
             this.modelToolStripMenuItem.Click += new System.EventHandler(this.modelToolStripMenuItem_Click);
+            // 
+            // chartBox
+            // 
+            this.chartBox.AutoSize = true;
+            this.chartBox.BackColor = System.Drawing.SystemColors.Control;
+            this.chartBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartBox.Location = new System.Drawing.Point(0, 28);
+            this.chartBox.Name = "chartBox";
+            this.chartBox.Size = new System.Drawing.Size(983, 515);
+            this.chartBox.TabIndex = 2;
+            this.chartBox.TabStop = false;
+            // 
+            // myModelToolStripMenuItem
+            // 
+            this.myModelToolStripMenuItem.Name = "myModelToolStripMenuItem";
+            this.myModelToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.myModelToolStripMenuItem.Text = "My model";
+            this.myModelToolStripMenuItem.Click += new System.EventHandler(this.myModelToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -311,6 +320,7 @@
         private System.Windows.Forms.ToolStripMenuItem kursToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lukoilToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modelToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem myModelToolStripMenuItem;
     }
 }
 
